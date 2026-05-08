@@ -965,6 +965,15 @@ body {
   .cat-grid      { grid-template-columns: repeat(2, 1fr); }
   .plan-stats-bar { grid-template-columns: repeat(2, 1fr); }
 }
+.mobile-clock-card { display: none; padding: 16px 20px; margin-bottom: 4px; }
+.mobile-clock-row { display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+.mobile-time { font-size: 32px; font-weight: 700; color: var(--teal); font-variant-numeric: tabular-nums; line-height: 1; }
+.mobile-date { font-size: 12px; color: var(--muted); margin-top: 4px; }
+.mobile-sw { text-align: right; }
+.mobile-sw-display { font-size: 26px; font-weight: 700; color: var(--accent); font-variant-numeric: tabular-nums; }
+.mobile-sw-btns { display: flex; gap: 8px; justify-content: flex-end; margin-top: 6px; }
+.mobile-sw-btns .btn { padding: 4px 12px; font-size: 13px; }
+
 @media (max-width: 820px) {
   :root { --right-w: 0px; }
   .right-panel { display: none; }
@@ -972,6 +981,8 @@ body {
   .grid-2 { grid-template-columns: 1fr; }
   .topbar { gap: 10px; padding: 0 12px; }
   .topbar-logo { display: none; }
+  .topbar-clock { display: none; }
+  .mobile-clock-card { display: block; }
 }
 @media (min-width: 821px) {
   .bnav-btn { flex: 1; }

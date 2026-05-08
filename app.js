@@ -395,6 +395,8 @@ function startClock() {
     document.getElementById('topbar-date').textContent       = date;
     document.getElementById('clock-display').textContent     = time;
     document.getElementById('clock-date-display').textContent= date;
+    const mt=document.getElementById('mobile-time'); if(mt) mt.textContent=time;
+    const md=document.getElementById('mobile-date'); if(md) md.textContent=date;
 
     const h = now.getHours();
     const greet = h<5?'noapte!':h<12?'dimineața!':h<18?'ziua!':'seara!';
@@ -405,6 +407,29 @@ function startClock() {
   }
   tick();
   setInterval(tick, 1000);
+}
+
+/* ── Mobile Stopwatch ── */
+let swRunning=false, swStart=0, swElapsed=0, swTimer=null;
+function swStartStop() {
+  const btn=document.getElementById('mobile-sw-btn');
+  if(!swRunning){
+    swStart=Date.now()-swElapsed;
+    swTimer=setInterval(()=>{
+      swElapsed=Date.now()-swStart;
+      const ms=swElapsed, s=Math.floor(ms/1000)%60, m=Math.floor(ms/60000), t=Math.floor((ms%1000)/100);
+      const el=document.getElementById('mobile-sw-display');
+      if(el) el.textContent=pad(m)+':'+pad(s)+'.'+t;
+    },100);
+    swRunning=true; if(btn) btn.textContent='⏸ Stop';
+  } else {
+    clearInterval(swTimer); swRunning=false; if(btn) btn.textContent='▶ Start';
+  }
+}
+function swReset(){
+  clearInterval(swTimer); swRunning=false; swElapsed=0;
+  const el=document.getElementById('mobile-sw-display'); if(el) el.textContent='00:00.0';
+  const btn=document.getElementById('mobile-sw-btn'); if(btn) btn.textContent='▶ Start';
 }
 
 /* ═══════════════════════════════════════════════

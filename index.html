@@ -68,6 +68,23 @@
           </div>
         </div>
 
+        <!-- Clock + Stopwatch — mobile only -->
+        <div class="card mobile-clock-card">
+          <div class="mobile-clock-row">
+            <div>
+              <div class="mobile-time" id="mobile-time">00:00:00</div>
+              <div class="mobile-date" id="mobile-date">—</div>
+            </div>
+            <div class="mobile-sw">
+              <div class="mobile-sw-display" id="mobile-sw-display">00:00.0</div>
+              <div class="mobile-sw-btns">
+                <button class="btn btn-ghost" onclick="swStartStop()" id="mobile-sw-btn">▶ Start</button>
+                <button class="btn btn-ghost" onclick="swReset()" style="color:var(--muted)">↺</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
         <div class="stats-grid-4">
           <div class="stat-card" style="--c:var(--accent)">
             <div class="stat-num" id="dash-days">0</div>
