@@ -424,28 +424,8 @@ function startClock() {
   setInterval(tick, 1000);
 }
 
-/* ── Mobile Stopwatch ── */
-let swRunning=false, swStart=0, swElapsed=0, swTimer=null;
-function swStartStop() {
-  const btn=document.getElementById('mobile-sw-btn');
-  if(!swRunning){
-    swStart=Date.now()-swElapsed;
-    swTimer=setInterval(()=>{
-      swElapsed=Date.now()-swStart;
-      const ms=swElapsed, s=Math.floor(ms/1000)%60, m=Math.floor(ms/60000), t=Math.floor((ms%1000)/100);
-      const el=document.getElementById('mobile-sw-display');
-      if(el) el.textContent=pad(m)+':'+pad(s)+'.'+t;
-    },100);
-    swRunning=true; if(btn) btn.textContent='⏸ Stop';
-  } else {
-    clearInterval(swTimer); swRunning=false; if(btn) btn.textContent='▶ Start';
-  }
-}
-function swReset(){
-  clearInterval(swTimer); swRunning=false; swElapsed=0;
-  const el=document.getElementById('mobile-sw-display'); if(el) el.textContent='00:00.0';
-  const btn=document.getElementById('mobile-sw-btn'); if(btn) btn.textContent='▶ Start';
-}
+/* ── Mobile Stopwatch — delegate to swToggle/swReset ── */
+function swStartStop() { swToggle(); }
 
 /* ═══════════════════════════════════════════════
    COUNTDOWN WIDGET
@@ -666,23 +646,34 @@ async function getAISfat() {
 let swRunning=false, swStartedAt=0, swElapsed=0, swInterval=null, swLaps=[], lapCount=0;
 
 function swToggle() {
+  const startBtn  = document.getElementById('sw-start-btn');
+  const mobileBtn = document.getElementById('mobile-sw-btn');
   if (swRunning) {
     clearInterval(swInterval);
     swElapsed += Date.now() - swStartedAt;
     swRunning = false;
-    document.getElementById('sw-start-btn').textContent = '▶ Start';
+    if (startBtn)  startBtn.textContent  = '▶ Start';
+    if (mobileBtn) mobileBtn.textContent = '▶ Start';
   } else {
     swStartedAt = Date.now(); swRunning = true;
-    document.getElementById('sw-start-btn').textContent = '⏸ Pauză';
+    if (startBtn)  startBtn.textContent  = '⏸ Pauză';
+    if (mobileBtn) mobileBtn.textContent = '⏸ Stop';
     swInterval = setInterval(swRender, 67);
   }
 }
 function swReset() {
   clearInterval(swInterval);
   swRunning=false; swElapsed=0; swLaps=[]; lapCount=0;
-  document.getElementById('sw-start-btn').textContent='▶ Start';
-  document.getElementById('sw-display').textContent='00:00.0';
-  document.getElementById('sw-laps').innerHTML='';
+  const startBtn  = document.getElementById('sw-start-btn');
+  const mobileBtn = document.getElementById('mobile-sw-btn');
+  const disp      = document.getElementById('sw-display');
+  const mobDisp   = document.getElementById('mobile-sw-display');
+  const laps      = document.getElementById('sw-laps');
+  if (startBtn)  startBtn.textContent  = '▶ Start';
+  if (mobileBtn) mobileBtn.textContent = '▶ Start';
+  if (disp)      disp.textContent      = '00:00.0';
+  if (mobDisp)   mobDisp.textContent   = '00:00.0';
+  if (laps)      laps.innerHTML        = '';
 }
 function swLap() {
   if (!swRunning && swElapsed===0) return;
@@ -693,10 +684,15 @@ function swLap() {
   const div = document.createElement('div');
   div.className='sw-lap';
   div.innerHTML=`<span>Lap ${lapCount}</span><span style="color:var(--teal)">${fmtSw(total-prev)}</span><span>${fmtSw(total)}</span>`;
-  document.getElementById('sw-laps').prepend(div);
+  const laps = document.getElementById('sw-laps');
+  if (laps) laps.prepend(div);
 }
 function swRender() {
-  document.getElementById('sw-display').textContent = fmtSw(swElapsed+(Date.now()-swStartedAt));
+  const t = fmtSw(swElapsed+(Date.now()-swStartedAt));
+  const disp    = document.getElementById('sw-display');
+  const mobDisp = document.getElementById('mobile-sw-display');
+  if (disp)    disp.textContent    = t;
+  if (mobDisp) mobDisp.textContent = t;
 }
 function fmtSw(ms) {
   const s=Math.floor(ms/1000), m=Math.floor(s/60), ds=Math.floor((ms%1000)/100);
