@@ -926,6 +926,23 @@
   </nav>
 
   <div id="toast"></div>
+
+  <!-- Nav inline — funcționează independent de app.js -->
+  <script>
+    function switchPage(page) {
+      try {
+        var allBtns  = document.querySelectorAll('.bnav-btn');
+        var allPages = document.querySelectorAll('.page');
+        for (var i = 0; i < allBtns.length;  i++) allBtns[i].classList.remove('active');
+        for (var j = 0; j < allPages.length; j++) allPages[j].classList.remove('active');
+        var btn = document.querySelector('[data-page="'+page+'"]');
+        var pg  = document.getElementById('page-'+page);
+        if (btn) btn.classList.add('active');
+        if (pg)  pg.classList.add('active');
+      } catch(e) {}
+    }
+  </script>
+
   <script src="app.js?v=8"></script>
   <script>
     if ('serviceWorker' in navigator) {
