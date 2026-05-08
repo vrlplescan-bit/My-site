@@ -391,12 +391,10 @@ function startClock() {
     const now  = new Date();
     const time = pad(now.getHours())+':'+pad(now.getMinutes())+':'+pad(now.getSeconds());
     const date = now.toLocaleDateString('ro-RO',{weekday:'long',day:'numeric',month:'long',year:'numeric'});
-    document.getElementById('topbar-time').textContent       = time;
-    document.getElementById('topbar-date').textContent       = date;
-    document.getElementById('clock-display').textContent     = time;
-    document.getElementById('clock-date-display').textContent= date;
-    const mt=document.getElementById('mobile-time'); if(mt) mt.textContent=time;
-    const md=document.getElementById('mobile-date'); if(md) md.textContent=date;
+    const safe=(id,v)=>{const e=document.getElementById(id);if(e)e.textContent=v;};
+    safe('topbar-time',time); safe('topbar-date',date);
+    safe('clock-display',time); safe('clock-date-display',date);
+    safe('mobile-time',time); safe('mobile-date',date);
 
     const h = now.getHours();
     const greet = h<5?'noapte!':h<12?'dimineața!':h<18?'ziua!':'seara!';
