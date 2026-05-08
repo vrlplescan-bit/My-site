@@ -1,0 +1,10 @@
+{
+  "permissions": {
+    "allow": [
+      "mcp__Claude_Preview__preview_start",
+      "Bash(node -e \"require\\('http'\\).createServer\\(\\(req,res\\)=>{const fs=require\\('fs'\\),path=require\\('path'\\);let f='.'+req.url;if\\(f==='./'\\) f='./index.html';try{const d=fs.readFileSync\\(f\\);const m={'html':'text/html','css':'text/css','js':'text/javascript'};res.writeHead\\(200,{'Content-Type':m[f.split\\('.'\\).pop\\(\\)]||'text/plain'}\\);res.end\\(d\\);}catch\\(e\\){res.writeHead\\(404\\);res.end\\('Not found'\\);}}\\).listen\\(3333,\\(\\)=>console.log\\('ready'\\)\\)\")",
+      "Bash(python3 -)",
+      "Bash(git config *)"
+    ]
+  }
+}

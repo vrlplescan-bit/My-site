@@ -1,0 +1,1137 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Spațiul Meu Personal</title>
+  <style>
+    :root {
+      --bg: #0f0f13;
+      --surface: #18181f;
+      --card: #1e1e28;
+      --border: #2a2a38;
+      --accent: #7c6af7;
+      --accent2: #5eead4;
+      --accent3: #f472b6;
+      --text: #e2e2f0;
+      --muted: #7070a0;
+      --success: #34d399;
+      --warning: #fbbf24;
+      --danger: #f87171;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Segoe UI', system-ui, sans-serif;
+      min-height: 100vh;
+    }
+
+    /* ─── Layout ─────────────────────────────────────────── */
+    .layout {
+      display: flex;
+      min-height: 100vh;
+    }
+
+    /* ─── Sidebar ─────────────────────────────────────────── */
+    .sidebar {
+      width: 220px;
+      background: var(--surface);
+      border-right: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      padding: 24px 0;
+      position: fixed;
+      top: 0; left: 0; bottom: 0;
+      z-index: 10;
+    }
+
+    .logo {
+      padding: 0 20px 24px;
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--accent);
+      letter-spacing: 0.5px;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 12px;
+    }
+
+    .logo span { color: var(--accent2); }
+
+    .nav-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 11px 20px;
+      cursor: pointer;
+      color: var(--muted);
+      font-size: 14px;
+      font-weight: 500;
+      border-left: 3px solid transparent;
+      transition: all .18s;
+      user-select: none;
+    }
+
+    .nav-item:hover { color: var(--text); background: rgba(124,106,247,.07); }
+    .nav-item.active { color: var(--accent); border-left-color: var(--accent); background: rgba(124,106,247,.12); }
+    .nav-item .icon { font-size: 18px; width: 22px; text-align: center; }
+
+    /* ─── Main content ────────────────────────────────────── */
+    .main {
+      margin-left: 220px;
+      flex: 1;
+      padding: 32px;
+      max-width: 900px;
+    }
+
+    /* ─── Pages ───────────────────────────────────────────── */
+    .page { display: none; }
+    .page.active { display: block; }
+
+    /* ─── Cards ───────────────────────────────────────────── */
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 22px 24px;
+      margin-bottom: 20px;
+    }
+
+    .card-title {
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 16px;
+    }
+
+    /* ─── Stats bar ───────────────────────────────────────── */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+
+    .stat-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 20px;
+      text-align: center;
+    }
+
+    .stat-num {
+      font-size: 36px;
+      font-weight: 700;
+      line-height: 1;
+      margin-bottom: 6px;
+    }
+
+    .stat-label { font-size: 12px; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; }
+
+    /* ─── Inputs ──────────────────────────────────────────── */
+    input[type="text"],
+    input[type="number"],
+    input[type="date"],
+    input[type="time"],
+    textarea,
+    select {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      color: var(--text);
+      padding: 10px 14px;
+      font-size: 14px;
+      font-family: inherit;
+      outline: none;
+      transition: border-color .18s;
+    }
+
+    input:focus, textarea:focus, select:focus { border-color: var(--accent); }
+
+    textarea { resize: vertical; min-height: 90px; width: 100%; }
+
+    /* ─── Buttons ─────────────────────────────────────────── */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 9px 18px;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      border: none;
+      transition: opacity .15s, transform .1s;
+    }
+
+    .btn:hover { opacity: .85; transform: translateY(-1px); }
+    .btn:active { transform: translateY(0); }
+    .btn-primary { background: var(--accent); color: #fff; }
+    .btn-success { background: var(--success); color: #000; }
+    .btn-danger  { background: var(--danger);  color: #fff; }
+    .btn-ghost   { background: transparent; border: 1px solid var(--border); color: var(--text); }
+
+    /* ─── Todo list ───────────────────────────────────────── */
+    .todo-add {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 18px;
+    }
+
+    .todo-add input { flex: 1; }
+
+    .todo-filters {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 14px;
+    }
+
+    .filter-btn {
+      padding: 5px 14px;
+      border-radius: 20px;
+      border: 1px solid var(--border);
+      background: transparent;
+      color: var(--muted);
+      font-size: 13px;
+      cursor: pointer;
+      transition: all .15s;
+    }
+
+    .filter-btn.active { background: var(--accent); border-color: var(--accent); color: #fff; }
+
+    .todo-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 14px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      margin-bottom: 8px;
+      transition: opacity .2s;
+    }
+
+    .todo-item.done { opacity: .5; }
+    .todo-item.done .todo-text { text-decoration: line-through; color: var(--muted); }
+
+    .todo-check {
+      width: 20px; height: 20px;
+      border-radius: 50%;
+      border: 2px solid var(--border);
+      cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+      transition: all .15s;
+    }
+
+    .todo-check.checked { background: var(--success); border-color: var(--success); }
+    .todo-check.checked::after { content: '✓'; color: #000; font-size: 12px; font-weight: 700; }
+
+    .todo-text { flex: 1; font-size: 14px; }
+
+    .todo-del {
+      color: var(--muted);
+      cursor: pointer;
+      font-size: 16px;
+      padding: 2px 6px;
+      border-radius: 4px;
+      transition: color .15s;
+    }
+
+    .todo-del:hover { color: var(--danger); }
+
+    .todo-category {
+      font-size: 11px;
+      padding: 2px 8px;
+      border-radius: 10px;
+      background: rgba(124,106,247,.15);
+      color: var(--accent);
+    }
+
+    /* ─── Thoughts / Journal ──────────────────────────────── */
+    .thought-add { margin-bottom: 20px; }
+
+    .thought-add textarea { margin-bottom: 10px; }
+
+    .thought-add-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .thought-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-left: 3px solid var(--accent);
+      border-radius: 10px;
+      padding: 14px 16px;
+      margin-bottom: 10px;
+    }
+
+    .thought-date {
+      font-size: 11px;
+      color: var(--muted);
+      margin-bottom: 6px;
+    }
+
+    .thought-text { font-size: 14px; line-height: 1.6; white-space: pre-wrap; }
+
+    .thought-mood {
+      display: inline-block;
+      font-size: 20px;
+      margin-right: 6px;
+    }
+
+    /* ─── Calendar / Learning ─────────────────────────────── */
+    .calendar-setup {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      flex-wrap: wrap;
+      margin-bottom: 20px;
+    }
+
+    .calendar-setup label { font-size: 13px; color: var(--muted); }
+
+    .hour-log-row {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      margin-bottom: 16px;
+    }
+
+    .hour-log-row input[type="number"] { width: 90px; }
+
+    .log-entry {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 9px 14px;
+      background: var(--surface);
+      border-radius: 8px;
+      margin-bottom: 6px;
+      font-size: 13px;
+    }
+
+    .log-date { color: var(--muted); }
+    .log-hours { color: var(--accent2); font-weight: 600; }
+
+    /* Progress bar */
+    .progress-bar {
+      background: var(--border);
+      border-radius: 99px;
+      height: 8px;
+      overflow: hidden;
+      margin: 8px 0;
+    }
+
+    .progress-fill {
+      height: 100%;
+      border-radius: 99px;
+      background: linear-gradient(90deg, var(--accent), var(--accent2));
+      transition: width .4s ease;
+    }
+
+    /* ─── Notifications ───────────────────────────────────── */
+    .notif-list { margin-top: 10px; }
+
+    .notif-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 14px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      margin-bottom: 8px;
+    }
+
+    .notif-icon { font-size: 20px; }
+    .notif-text { flex: 1; font-size: 13px; }
+    .notif-time { font-size: 12px; color: var(--muted); }
+    .notif-del { color: var(--muted); cursor: pointer; }
+    .notif-del:hover { color: var(--danger); }
+
+    .notif-add-row {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      align-items: center;
+      margin-bottom: 14px;
+    }
+
+    .notif-add-row input[type="text"] { flex: 1; min-width: 180px; }
+
+    /* ─── Toast ───────────────────────────────────────────── */
+    #toast {
+      position: fixed;
+      bottom: 28px; right: 28px;
+      background: var(--accent);
+      color: #fff;
+      padding: 12px 20px;
+      border-radius: 10px;
+      font-size: 14px;
+      font-weight: 500;
+      transform: translateY(80px);
+      opacity: 0;
+      transition: all .3s;
+      z-index: 999;
+      max-width: 300px;
+    }
+
+    #toast.show { transform: translateY(0); opacity: 1; }
+
+    /* ─── Calendar mini ───────────────────────────────────── */
+    .mini-cal {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 4px;
+      margin-top: 12px;
+    }
+
+    .cal-day-header {
+      text-align: center;
+      font-size: 11px;
+      color: var(--muted);
+      padding: 4px;
+      font-weight: 600;
+    }
+
+    .cal-day {
+      text-align: center;
+      padding: 6px 4px;
+      border-radius: 6px;
+      font-size: 13px;
+      cursor: pointer;
+      transition: background .15s;
+    }
+
+    .cal-day:hover { background: var(--border); }
+    .cal-day.today { background: var(--accent); color: #fff; font-weight: 700; }
+    .cal-day.has-hours { background: rgba(94,234,212,.15); color: var(--accent2); }
+    .cal-day.has-hours.today { background: var(--accent); color: #fff; }
+    .cal-day.empty { pointer-events: none; }
+
+    .cal-nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 8px;
+    }
+
+    .cal-nav button {
+      background: none;
+      border: 1px solid var(--border);
+      color: var(--text);
+      border-radius: 6px;
+      padding: 4px 12px;
+      cursor: pointer;
+      font-size: 15px;
+    }
+
+    .page-title {
+      font-size: 24px;
+      font-weight: 700;
+      margin-bottom: 24px;
+      color: var(--text);
+    }
+
+    .page-title span { color: var(--accent); }
+
+    /* ─── Mood selector ───────────────────────────────────── */
+    .mood-row {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 10px;
+    }
+
+    .mood-btn {
+      font-size: 22px;
+      padding: 4px 8px;
+      border-radius: 8px;
+      cursor: pointer;
+      border: 2px solid transparent;
+      transition: border-color .15s;
+    }
+
+    .mood-btn.selected { border-color: var(--accent); background: rgba(124,106,247,.12); }
+
+    /* ─── Responsive ──────────────────────────────────────── */
+    @media (max-width: 700px) {
+      .sidebar { width: 60px; }
+      .sidebar .nav-item span { display: none; }
+      .logo { font-size: 0; padding: 0 16px 20px; }
+      .logo::before { content: '✦'; font-size: 20px; color: var(--accent); }
+      .main { margin-left: 60px; padding: 20px 16px; }
+      .stats-grid { grid-template-columns: 1fr 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="layout">
+
+  <!-- ─── Sidebar ─────────────────────────── -->
+  <nav class="sidebar">
+    <div class="logo">✦ <span>Spațiul</span> Meu</div>
+    <div class="nav-item active" onclick="showPage('dashboard')">
+      <span class="icon">🏠</span><span>Dashboard</span>
+    </div>
+    <div class="nav-item" onclick="showPage('todo')">
+      <span class="icon">✅</span><span>To-Do</span>
+    </div>
+    <div class="nav-item" onclick="showPage('thoughts')">
+      <span class="icon">💭</span><span>Gânduri</span>
+    </div>
+    <div class="nav-item" onclick="showPage('learning')">
+      <span class="icon">📚</span><span>Învățare</span>
+    </div>
+    <div class="nav-item" onclick="showPage('notifications')">
+      <span class="icon">🔔</span><span>Notificări</span>
+    </div>
+  </nav>
+
+  <!-- ─── Main ────────────────────────────── -->
+  <main class="main">
+
+    <!-- ═══ DASHBOARD ════════════════════════ -->
+    <div id="page-dashboard" class="page active">
+      <div class="page-title">Bună ziua! <span id="dash-name">👋</span></div>
+
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-num" style="color:var(--accent)" id="dash-days">0</div>
+          <div class="stat-label">Zile de învățare</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-num" style="color:var(--accent2)" id="dash-hours">0</div>
+          <div class="stat-label">Ore totale</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-num" style="color:var(--accent3)" id="dash-todo">0</div>
+          <div class="stat-label">Task-uri azi</div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">Progres zilnic</div>
+        <div style="display:flex;justify-content:space-between;font-size:13px;color:var(--muted);margin-bottom:4px;">
+          <span>Task-uri bifate</span>
+          <span id="dash-progress-text">0 / 0</span>
+        </div>
+        <div class="progress-bar">
+          <div class="progress-fill" id="dash-progress-bar" style="width:0%"></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">Ultimele gânduri</div>
+        <div id="dash-thoughts-preview"></div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">Notificări active</div>
+        <div id="dash-notifs-preview"></div>
+      </div>
+    </div>
+
+    <!-- ═══ TODO ═════════════════════════════ -->
+    <div id="page-todo" class="page">
+      <div class="page-title">Lista de <span>To-Do</span></div>
+
+      <div class="card">
+        <div class="todo-add">
+          <input type="text" id="todo-input" placeholder="Adaugă task nou..." onkeydown="if(event.key==='Enter') addTodo()" />
+          <select id="todo-cat" style="width:130px;">
+            <option value="General">General</option>
+            <option value="Învățare">Învățare</option>
+            <option value="Personal">Personal</option>
+            <option value="Urgent">Urgent</option>
+          </select>
+          <button class="btn btn-primary" onclick="addTodo()">+ Adaugă</button>
+        </div>
+
+        <div class="todo-filters">
+          <button class="filter-btn active" onclick="setFilter('all',this)">Toate</button>
+          <button class="filter-btn" onclick="setFilter('active',this)">Active</button>
+          <button class="filter-btn" onclick="setFilter('done',this)">Bifate</button>
+        </div>
+
+        <div id="todo-list"></div>
+        <div id="todo-empty" style="text-align:center;color:var(--muted);padding:20px;display:none;">Nicio sarcină. Adaugă una!</div>
+      </div>
+    </div>
+
+    <!-- ═══ THOUGHTS ═════════════════════════ -->
+    <div id="page-thoughts" class="page">
+      <div class="page-title">Gândurile <span>Mele</span></div>
+
+      <div class="card thought-add">
+        <div class="card-title">Notează un gând</div>
+        <div class="mood-row" id="mood-row">
+          <div class="mood-btn" onclick="selectMood('😊')">😊</div>
+          <div class="mood-btn" onclick="selectMood('😐')">😐</div>
+          <div class="mood-btn" onclick="selectMood('😔')">😔</div>
+          <div class="mood-btn" onclick="selectMood('🔥')">🔥</div>
+          <div class="mood-btn" onclick="selectMood('😴')">😴</div>
+          <div class="mood-btn" onclick="selectMood('💪')">💪</div>
+          <div class="mood-btn" onclick="selectMood('🤔')">🤔</div>
+        </div>
+        <textarea id="thought-input" placeholder="Ce gândești azi?..."></textarea>
+        <div class="thought-add-row">
+          <button class="btn btn-primary" onclick="addThought()">💭 Salvează gând</button>
+        </div>
+      </div>
+
+      <div id="thoughts-list"></div>
+      <div id="thoughts-empty" style="text-align:center;color:var(--muted);padding:20px;display:none;">Niciun gând salvat încă.</div>
+    </div>
+
+    <!-- ═══ LEARNING ══════════════════════════ -->
+    <div id="page-learning" class="page">
+      <div class="page-title">Tracker <span>Învățare</span></div>
+
+      <div class="card">
+        <div class="card-title">Data de start</div>
+        <div class="calendar-setup">
+          <label>M-am apucat de învățat pe:</label>
+          <input type="date" id="start-date" onchange="saveStartDate()" />
+          <button class="btn btn-ghost" onclick="resetStartDate()">Resetează</button>
+        </div>
+        <div id="start-info" style="font-size:14px;color:var(--accent2);font-weight:600;"></div>
+      </div>
+
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-num" style="color:var(--accent)" id="learn-days">0</div>
+          <div class="stat-label">Zile de la start</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-num" style="color:var(--accent2)" id="learn-hours">0</div>
+          <div class="stat-label">Ore totale</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-num" style="color:var(--accent3)" id="learn-avg">0</div>
+          <div class="stat-label">Ore/zi medie</div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">Adaugă ore azi</div>
+        <div class="hour-log-row">
+          <input type="number" id="hour-input" placeholder="Ore" min="0" max="24" step="0.5" />
+          <input type="date" id="hour-date" />
+          <input type="text" id="hour-note" placeholder="Ce ai studiat?" style="flex:1;" />
+          <button class="btn btn-success" onclick="logHours()">+ Log</button>
+        </div>
+
+        <div class="card-title" style="margin-top:8px;">Jurnal ore</div>
+        <div id="hours-log"></div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">Calendar <span id="cal-month-label"></span></div>
+        <div class="cal-nav">
+          <button onclick="changeCalMonth(-1)">‹</button>
+          <span id="cal-title" style="font-weight:600;"></span>
+          <button onclick="changeCalMonth(1)">›</button>
+        </div>
+        <div class="mini-cal" id="mini-cal"></div>
+        <div style="display:flex;gap:16px;margin-top:10px;font-size:12px;color:var(--muted);">
+          <span><span style="display:inline-block;width:12px;height:12px;background:var(--accent);border-radius:3px;margin-right:4px;"></span>Azi</span>
+          <span><span style="display:inline-block;width:12px;height:12px;background:rgba(94,234,212,.3);border-radius:3px;margin-right:4px;"></span>Ore loggate</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══ NOTIFICATIONS ════════════════════ -->
+    <div id="page-notifications" class="page">
+      <div class="page-title">🔔 <span>Notificări</span></div>
+
+      <div class="card">
+        <div class="card-title">Adaugă reamintire</div>
+        <div class="notif-add-row">
+          <input type="text" id="notif-text" placeholder="Mesajul notificării..." />
+          <input type="time" id="notif-time" />
+          <select id="notif-repeat" style="width:130px;">
+            <option value="daily">Zilnic</option>
+            <option value="once">O dată</option>
+            <option value="weekdays">Luni-Vineri</option>
+          </select>
+          <button class="btn btn-primary" onclick="addNotif()">+ Adaugă</button>
+        </div>
+        <div style="font-size:12px;color:var(--muted);margin-top:4px;">
+          💡 Permite notificările în browser pentru a primi alertele la ora setată.
+        </div>
+
+        <div id="notif-perm-btn" style="margin-top:12px;display:none;">
+          <button class="btn btn-ghost" onclick="requestNotifPerm()">🔔 Permite notificările</button>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">Notificările mele</div>
+        <div id="notif-list"></div>
+        <div id="notif-empty" style="text-align:center;color:var(--muted);padding:16px;display:none;">Nicio notificare setată.</div>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<!-- Toast -->
+<div id="toast"></div>
+
+<script>
+// ─── State ─────────────────────────────────────────────────────────
+const S = {
+  get todos()       { return JSON.parse(localStorage.getItem('todos') || '[]'); },
+  set todos(v)      { localStorage.setItem('todos', JSON.stringify(v)); },
+  get thoughts()    { return JSON.parse(localStorage.getItem('thoughts') || '[]'); },
+  set thoughts(v)   { localStorage.setItem('thoughts', JSON.stringify(v)); },
+  get startDate()   { return localStorage.getItem('startDate') || ''; },
+  set startDate(v)  { localStorage.setItem('startDate', v); },
+  get hoursLog()    { return JSON.parse(localStorage.getItem('hoursLog') || '[]'); },
+  set hoursLog(v)   { localStorage.setItem('hoursLog', JSON.stringify(v)); },
+  get notifs()      { return JSON.parse(localStorage.getItem('notifs') || '[]'); },
+  set notifs(v)     { localStorage.setItem('notifs', JSON.stringify(v)); },
+};
+
+let currentFilter = 'all';
+let currentMood = '';
+let calYear, calMonth;
+
+const now = new Date();
+calYear  = now.getFullYear();
+calMonth = now.getMonth();
+
+// ─── Navigation ────────────────────────────────────────────────────
+function showPage(name) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  document.getElementById('page-' + name).classList.add('active');
+  event.currentTarget.classList.add('active');
+  if (name === 'dashboard') renderDashboard();
+  if (name === 'todo')      renderTodos();
+  if (name === 'thoughts')  renderThoughts();
+  if (name === 'learning')  renderLearning();
+  if (name === 'notifications') renderNotifs();
+}
+
+// ─── Toast ─────────────────────────────────────────────────────────
+function toast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2800);
+}
+
+// ─── TODO ──────────────────────────────────────────────────────────
+function addTodo() {
+  const input = document.getElementById('todo-input');
+  const text = input.value.trim();
+  if (!text) return;
+  const cat = document.getElementById('todo-cat').value;
+  const todos = S.todos;
+  todos.unshift({ id: Date.now(), text, cat, done: false, date: new Date().toLocaleDateString('ro-RO') });
+  S.todos = todos;
+  input.value = '';
+  renderTodos();
+  toast('Task adăugat!');
+}
+
+function toggleTodo(id) {
+  const todos = S.todos;
+  const t = todos.find(x => x.id === id);
+  if (t) t.done = !t.done;
+  S.todos = todos;
+  renderTodos();
+  renderDashboard();
+}
+
+function deleteTodo(id) {
+  S.todos = S.todos.filter(x => x.id !== id);
+  renderTodos();
+  renderDashboard();
+}
+
+function setFilter(f, el) {
+  currentFilter = f;
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  el.classList.add('active');
+  renderTodos();
+}
+
+function renderTodos() {
+  let todos = S.todos;
+  if (currentFilter === 'active') todos = todos.filter(t => !t.done);
+  if (currentFilter === 'done')   todos = todos.filter(t => t.done);
+
+  const list = document.getElementById('todo-list');
+  const empty = document.getElementById('todo-empty');
+
+  if (!todos.length) { list.innerHTML = ''; empty.style.display = 'block'; return; }
+  empty.style.display = 'none';
+
+  list.innerHTML = todos.map(t => `
+    <div class="todo-item ${t.done ? 'done' : ''}">
+      <div class="todo-check ${t.done ? 'checked' : ''}" onclick="toggleTodo(${t.id})"></div>
+      <span class="todo-text">${escHtml(t.text)}</span>
+      <span class="todo-category">${escHtml(t.cat)}</span>
+      <span class="todo-del" onclick="deleteTodo(${t.id})">✕</span>
+    </div>
+  `).join('');
+}
+
+// ─── THOUGHTS ──────────────────────────────────────────────────────
+function selectMood(m) {
+  currentMood = m;
+  document.querySelectorAll('.mood-btn').forEach(b => {
+    b.classList.toggle('selected', b.textContent === m);
+  });
+}
+
+function addThought() {
+  const input = document.getElementById('thought-input');
+  const text = input.value.trim();
+  if (!text) return;
+  const thoughts = S.thoughts;
+  thoughts.unshift({
+    id: Date.now(),
+    text,
+    mood: currentMood,
+    date: new Date().toLocaleString('ro-RO')
+  });
+  S.thoughts = thoughts;
+  input.value = '';
+  currentMood = '';
+  document.querySelectorAll('.mood-btn').forEach(b => b.classList.remove('selected'));
+  renderThoughts();
+  toast('Gând salvat!');
+}
+
+function deleteThought(id) {
+  S.thoughts = S.thoughts.filter(t => t.id !== id);
+  renderThoughts();
+}
+
+function renderThoughts() {
+  const thoughts = S.thoughts;
+  const list = document.getElementById('thoughts-list');
+  const empty = document.getElementById('thoughts-empty');
+  if (!thoughts.length) { list.innerHTML = ''; empty.style.display = 'block'; return; }
+  empty.style.display = 'none';
+  list.innerHTML = thoughts.map(t => `
+    <div class="thought-card">
+      <div class="thought-date">
+        ${t.mood ? `<span class="thought-mood">${t.mood}</span>` : ''}
+        ${escHtml(t.date)}
+      </div>
+      <div class="thought-text">${escHtml(t.text)}</div>
+      <div style="text-align:right;margin-top:8px;">
+        <span style="font-size:12px;color:var(--muted);cursor:pointer;" onclick="deleteThought(${t.id})">Șterge</span>
+      </div>
+    </div>
+  `).join('');
+}
+
+// ─── LEARNING ──────────────────────────────────────────────────────
+function saveStartDate() {
+  S.startDate = document.getElementById('start-date').value;
+  renderLearning();
+  toast('Data de start salvată!');
+}
+
+function resetStartDate() {
+  S.startDate = '';
+  document.getElementById('start-date').value = '';
+  renderLearning();
+}
+
+function logHours() {
+  const h = parseFloat(document.getElementById('hour-input').value);
+  const d = document.getElementById('hour-date').value;
+  const note = document.getElementById('hour-note').value.trim();
+  if (!h || !d) { toast('Introdu orele și data!'); return; }
+  const log = S.hoursLog;
+  log.unshift({ id: Date.now(), hours: h, date: d, note });
+  S.hoursLog = log;
+  document.getElementById('hour-input').value = '';
+  document.getElementById('hour-note').value = '';
+  renderLearning();
+  toast(`${h} ore adăugate!`);
+}
+
+function deleteHourLog(id) {
+  S.hoursLog = S.hoursLog.filter(x => x.id !== id);
+  renderLearning();
+}
+
+function renderLearning() {
+  // start date
+  const sd = S.startDate;
+  const sdEl = document.getElementById('start-date');
+  if (sd) sdEl.value = sd;
+
+  const log = S.hoursLog;
+  const totalHours = log.reduce((a, b) => a + b.hours, 0);
+
+  let daysElapsed = 0;
+  let avgHours = 0;
+  if (sd) {
+    const start = new Date(sd);
+    const today = new Date();
+    today.setHours(0,0,0,0);
+    start.setHours(0,0,0,0);
+    daysElapsed = Math.max(0, Math.floor((today - start) / 86400000) + 1);
+    avgHours = daysElapsed > 0 ? (totalHours / daysElapsed).toFixed(1) : 0;
+    document.getElementById('start-info').textContent =
+      `🗓️ Ai ${daysElapsed} zile de când te-ai apucat de învățat!`;
+  } else {
+    document.getElementById('start-info').textContent = 'Setează data de start mai sus.';
+  }
+
+  document.getElementById('learn-days').textContent  = daysElapsed;
+  document.getElementById('learn-hours').textContent = totalHours.toFixed(1);
+  document.getElementById('learn-avg').textContent   = avgHours;
+
+  // Today's date default
+  const todayStr = new Date().toISOString().split('T')[0];
+  if (!document.getElementById('hour-date').value)
+    document.getElementById('hour-date').value = todayStr;
+
+  // Log list
+  const logEl = document.getElementById('hours-log');
+  if (!log.length) { logEl.innerHTML = '<div style="color:var(--muted);font-size:13px;padding:8px 0;">Nicio oră logată încă.</div>'; }
+  else {
+    logEl.innerHTML = log.map(e => `
+      <div class="log-entry">
+        <span class="log-date">📅 ${formatDate(e.date)}</span>
+        <span style="flex:1;margin-left:12px;font-size:13px;color:var(--muted);">${escHtml(e.note || '')}</span>
+        <span class="log-hours">${e.hours}h</span>
+        <span style="margin-left:10px;cursor:pointer;color:var(--muted);" onclick="deleteHourLog(${e.id})">✕</span>
+      </div>
+    `).join('');
+  }
+
+  renderCalendar();
+  // update dash stats
+  document.getElementById('dash-days').textContent  = daysElapsed;
+  document.getElementById('dash-hours').textContent = totalHours.toFixed(1);
+}
+
+function renderCalendar() {
+  const log = S.hoursLog;
+  const hoursDateSet = new Set(log.map(e => e.date));
+
+  const monthNames = ['Ianuarie','Februarie','Martie','Aprilie','Mai','Iunie','Iulie','August','Septembrie','Octombrie','Noiembrie','Decembrie'];
+  document.getElementById('cal-title').textContent = `${monthNames[calMonth]} ${calYear}`;
+
+  const days = ['Lu','Ma','Mi','Jo','Vi','Sa','Du'];
+  const firstDay = new Date(calYear, calMonth, 1).getDay();
+  const offset = (firstDay === 0 ? 6 : firstDay - 1);
+  const daysInMonth = new Date(calYear, calMonth + 1, 0).getDate();
+  const todayStr = new Date().toISOString().split('T')[0];
+
+  let html = days.map(d => `<div class="cal-day-header">${d}</div>`).join('');
+  for (let i = 0; i < offset; i++) html += `<div class="cal-day empty"></div>`;
+  for (let d = 1; d <= daysInMonth; d++) {
+    const dateStr = `${calYear}-${String(calMonth+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
+    const isToday = dateStr === todayStr;
+    const hasHours = hoursDateSet.has(dateStr);
+    html += `<div class="cal-day ${isToday?'today':''} ${hasHours?'has-hours':''}" title="${hasHours?'Ore loggate':''}">${d}</div>`;
+  }
+
+  document.getElementById('mini-cal').innerHTML = html;
+}
+
+function changeCalMonth(dir) {
+  calMonth += dir;
+  if (calMonth > 11) { calMonth = 0; calYear++; }
+  if (calMonth < 0)  { calMonth = 11; calYear--; }
+  renderCalendar();
+}
+
+// ─── NOTIFICATIONS ─────────────────────────────────────────────────
+function addNotif() {
+  const text = document.getElementById('notif-text').value.trim();
+  const time = document.getElementById('notif-time').value;
+  const repeat = document.getElementById('notif-repeat').value;
+  if (!text || !time) { toast('Completează mesajul și ora!'); return; }
+
+  const notifs = S.notifs;
+  notifs.push({ id: Date.now(), text, time, repeat, active: true });
+  S.notifs = notifs;
+  document.getElementById('notif-text').value = '';
+  document.getElementById('notif-time').value = '';
+  renderNotifs();
+  toast('Notificare setată!');
+}
+
+function deleteNotif(id) {
+  S.notifs = S.notifs.filter(n => n.id !== id);
+  renderNotifs();
+}
+
+function toggleNotif(id) {
+  const notifs = S.notifs;
+  const n = notifs.find(x => x.id === id);
+  if (n) n.active = !n.active;
+  S.notifs = notifs;
+  renderNotifs();
+}
+
+function requestNotifPerm() {
+  Notification.requestPermission().then(p => {
+    if (p === 'granted') toast('Notificări activate!');
+    renderNotifs();
+  });
+}
+
+function renderNotifs() {
+  const notifs = S.notifs;
+  const list = document.getElementById('notif-list');
+  const empty = document.getElementById('notif-empty');
+
+  const permBtn = document.getElementById('notif-perm-btn');
+  if (Notification.permission !== 'granted') permBtn.style.display = 'block';
+  else permBtn.style.display = 'none';
+
+  if (!notifs.length) { list.innerHTML = ''; empty.style.display = 'block'; return; }
+  empty.style.display = 'none';
+
+  const repeatLabel = { daily:'Zilnic', once:'O dată', weekdays:'Luni-Vineri' };
+
+  list.innerHTML = notifs.map(n => `
+    <div class="notif-item" style="${!n.active?'opacity:.5':''}">
+      <span class="notif-icon">🔔</span>
+      <div class="notif-text">
+        <div style="font-weight:600;">${escHtml(n.text)}</div>
+        <div style="font-size:12px;color:var(--muted);margin-top:2px;">
+          ⏰ ${n.time} &nbsp;·&nbsp; ${repeatLabel[n.repeat]||n.repeat}
+          &nbsp;·&nbsp; <span style="color:${n.active?'var(--success)':'var(--muted)'}">${n.active?'Activ':'Inactiv'}</span>
+        </div>
+      </div>
+      <span class="btn btn-ghost" style="font-size:12px;padding:5px 10px;cursor:pointer;" onclick="toggleNotif(${n.id})">${n.active?'Pauză':'Activează'}</span>
+      <span class="notif-del" onclick="deleteNotif(${n.id})">✕</span>
+    </div>
+  `).join('');
+}
+
+// ─── DASHBOARD ─────────────────────────────────────────────────────
+function renderDashboard() {
+  const todos = S.todos;
+  const total = todos.length;
+  const done  = todos.filter(t => t.done).length;
+  document.getElementById('dash-todo').textContent = total - done;
+  document.getElementById('dash-progress-text').textContent = `${done} / ${total}`;
+  const pct = total > 0 ? Math.round(done / total * 100) : 0;
+  document.getElementById('dash-progress-bar').style.width = pct + '%';
+
+  // thoughts preview
+  const tPreview = document.getElementById('dash-thoughts-preview');
+  const thoughts = S.thoughts.slice(0, 2);
+  if (!thoughts.length) tPreview.innerHTML = '<div style="color:var(--muted);font-size:13px;">Niciun gând încă. Accesează secțiunea Gânduri.</div>';
+  else tPreview.innerHTML = thoughts.map(t => `
+    <div style="padding:10px 0;border-bottom:1px solid var(--border);">
+      <div style="font-size:11px;color:var(--muted);margin-bottom:4px;">${t.mood||''} ${t.date}</div>
+      <div style="font-size:13px;">${escHtml(t.text.substring(0,120))}${t.text.length>120?'…':''}</div>
+    </div>
+  `).join('');
+
+  // notifs preview
+  const nPreview = document.getElementById('dash-notifs-preview');
+  const notifs = S.notifs.filter(n => n.active);
+  if (!notifs.length) nPreview.innerHTML = '<div style="color:var(--muted);font-size:13px;">Nicio notificare activă.</div>';
+  else nPreview.innerHTML = notifs.map(n => `
+    <div style="display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid var(--border);">
+      <span>🔔</span>
+      <span style="flex:1;font-size:13px;">${escHtml(n.text)}</span>
+      <span style="font-size:12px;color:var(--accent2);">${n.time}</span>
+    </div>
+  `).join('');
+
+  // learning stats in dashboard (via renderLearning)
+  const log = S.hoursLog;
+  const totalHours = log.reduce((a, b) => a + b.hours, 0);
+  document.getElementById('dash-hours').textContent = totalHours.toFixed(1);
+  const sd = S.startDate;
+  if (sd) {
+    const start = new Date(sd); const today = new Date();
+    today.setHours(0,0,0,0); start.setHours(0,0,0,0);
+    document.getElementById('dash-days').textContent = Math.max(0, Math.floor((today - start) / 86400000) + 1);
+  }
+}
+
+// ─── Notification checker ──────────────────────────────────────────
+function checkNotifications() {
+  if (Notification.permission !== 'granted') return;
+  const now = new Date();
+  const timeStr = now.getHours().toString().padStart(2,'0') + ':' + now.getMinutes().toString().padStart(2,'0');
+  const day = now.getDay(); // 0=Sun, 1=Mon...5=Fri, 6=Sat
+
+  S.notifs.forEach(n => {
+    if (!n.active) return;
+    if (n.time !== timeStr) return;
+    if (n.repeat === 'weekdays' && (day === 0 || day === 6)) return;
+
+    // check if already fired this minute
+    const key = `notif_fired_${n.id}_${now.toDateString()}_${timeStr}`;
+    if (sessionStorage.getItem(key)) return;
+    sessionStorage.setItem(key, '1');
+
+    new Notification('⏰ Reminder personal', {
+      body: n.text,
+      icon: 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><text y=".9em" font-size="90">✦</text></svg>'
+    });
+
+    if (n.repeat === 'once') {
+      const notifs = S.notifs;
+      const idx = notifs.findIndex(x => x.id === n.id);
+      if (idx !== -1) { notifs[idx].active = false; S.notifs = notifs; }
+    }
+  });
+}
+
+// ─── Helpers ───────────────────────────────────────────────────────
+function escHtml(str) {
+  return String(str)
+    .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
+    .replace(/"/g,'&quot;');
+}
+
+function formatDate(d) {
+  if (!d) return '';
+  const [y, m, day] = d.split('-');
+  return `${day}.${m}.${y}`;
+}
+
+// ─── Init ──────────────────────────────────────────────────────────
+function init() {
+  renderDashboard();
+  renderTodos();
+  renderThoughts();
+  renderLearning();
+  renderNotifs();
+
+  // Request notification permission proactively
+  if (Notification.permission === 'default') {
+    setTimeout(() => {
+      document.getElementById('notif-perm-btn').style.display = 'block';
+    }, 1000);
+  }
+
+  // Check notifications every minute
+  setInterval(checkNotifications, 60000);
+  checkNotifications();
+}
+
+init();
+</script>
+</body>
+</html>
