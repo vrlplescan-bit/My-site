@@ -387,21 +387,21 @@ function initNav() {
    CLOCK
 ═══════════════════════════════════════════════ */
 function startClock() {
+  const ZILE=['duminică','luni','marți','miercuri','joi','vineri','sâmbătă'];
+  const LUNI=['ianuarie','februarie','martie','aprilie','mai','iunie','iulie','august','septembrie','octombrie','noiembrie','decembrie'];
   function tick() {
-    const now  = new Date();
-    const time = pad(now.getHours())+':'+pad(now.getMinutes())+':'+pad(now.getSeconds());
-    const date = now.toLocaleDateString('ro-RO',{weekday:'long',day:'numeric',month:'long',year:'numeric'});
-    const safe=(id,v)=>{const e=document.getElementById(id);if(e)e.textContent=v;};
-    safe('topbar-time',time); safe('topbar-date',date);
-    safe('clock-display',time); safe('clock-date-display',date);
-    safe('mobile-time',time); safe('mobile-date',date);
-
-    const h = now.getHours();
-    const greet = h<5?'noapte!':h<12?'dimineața!':h<18?'ziua!':'seara!';
-    const gEl = document.getElementById('dash-greeting');
-    if (gEl) gEl.textContent = greet;
-    const dfEl = document.getElementById('dash-date-full');
-    if (dfEl) dfEl.textContent = date;
+    try {
+      const now = new Date();
+      const time = pad(now.getHours())+':'+pad(now.getMinutes())+':'+pad(now.getSeconds());
+      const date = ZILE[now.getDay()]+', '+now.getDate()+' '+LUNI[now.getMonth()]+' '+now.getFullYear();
+      const safe = (id,v)=>{const e=document.getElementById(id);if(e)e.textContent=v;};
+      safe('topbar-time',time); safe('topbar-date',date);
+      safe('clock-display',time); safe('clock-date-display',date);
+      safe('mobile-time',time); safe('mobile-date',date);
+      const h = now.getHours();
+      const greet = h<5?'noapte!':h<12?'dimineața!':h<18?'ziua!':'seara!';
+      safe('dash-greeting',greet); safe('dash-date-full',date);
+    } catch(e) { console.error('clock error',e); }
   }
   tick();
   setInterval(tick, 1000);
