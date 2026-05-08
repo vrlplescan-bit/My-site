@@ -371,15 +371,20 @@ function initNav() {
   };
 
   function switchPage(page) {
-    document.querySelectorAll('.nav-btn, .bnav-btn').forEach(b => b.classList.remove('active'));
-    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-    document.querySelectorAll(`[data-page="${page}"]`).forEach(b => b.classList.add('active'));
-    document.getElementById('page-' + page).classList.add('active');
-    if (renders[page]) renders[page]();
+    try {
+      document.querySelectorAll('.bnav-btn').forEach(b => b.classList.remove('active'));
+      document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+      const btn  = document.querySelector('.bnav-btn[data-page="'+page+'"]');
+      const pg   = document.getElementById('page-'+page);
+      if (btn) btn.classList.add('active');
+      if (pg)  pg.classList.add('active');
+      else { toast('Pagina lipsă: '+page,'error'); return; }
+      try { if (renders[page]) renders[page](); } catch(re) { console.error('render error',page,re); }
+    } catch(e) { console.error('nav error',e); }
   }
 
-  document.querySelectorAll('.nav-btn, .bnav-btn').forEach(btn => {
-    btn.addEventListener('click', () => switchPage(btn.dataset.page));
+  document.querySelectorAll('.bnav-btn').forEach(btn => {
+    btn.addEventListener('click', function() { switchPage(this.dataset.page); });
   });
 }
 
