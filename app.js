@@ -359,33 +359,45 @@ function getWeekProgress(weekNr) {
 /* ═══════════════════════════════════════════════
    NAVIGATION
 ═══════════════════════════════════════════════ */
+function switchPage(page) {
+  try {
+    var renderMap = {
+      dashboard:     renderDashboard,
+      plan:          renderPlanPage,
+      todo:          renderTodos,
+      thoughts:      renderThoughts,
+      learning:      renderLearning,
+      german:        initNotepad,
+      notifications: renderNotifs,
+    };
+    var btns = document.querySelectorAll('.bnav-btn');
+    var pages = document.querySelectorAll('.page');
+    for (var i = 0; i < btns.length; i++) btns[i].classList.remove('active');
+    for (var j = 0; j < pages.length; j++) pages[j].classList.remove('active');
+    var btn = document.querySelector('.bnav-btn[data-page="'+page+'"]');
+    var pg  = document.getElementById('page-'+page);
+    if (btn) btn.classList.add('active');
+    if (pg)  pg.classList.add('active');
+    if (renderMap[page]) {
+      try { renderMap[page](); } catch(re) { console.error('render err',page,re); }
+    }
+  } catch(e) { console.error('switchPage err',e); }
+}
+
 function initNav() {
-  const renders = {
-    dashboard:     renderDashboard,
-    plan:          renderPlanPage,
-    todo:          renderTodos,
-    thoughts:      renderThoughts,
-    learning:      renderLearning,
-    german:        initNotepad,
-    notifications: renderNotifs,
-  };
-
-  function switchPage(page) {
-    try {
-      document.querySelectorAll('.bnav-btn').forEach(b => b.classList.remove('active'));
-      document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-      const btn  = document.querySelector('.bnav-btn[data-page="'+page+'"]');
-      const pg   = document.getElementById('page-'+page);
-      if (btn) btn.classList.add('active');
-      if (pg)  pg.classList.add('active');
-      else { toast('Pagina lipsă: '+page,'error'); return; }
-      try { if (renders[page]) renders[page](); } catch(re) { console.error('render error',page,re); }
-    } catch(e) { console.error('nav error',e); }
+  var btns = document.querySelectorAll('.bnav-btn');
+  for (var i = 0; i < btns.length; i++) {
+    (function(btn) {
+      btn.addEventListener('click', function(e) {
+        e.preventDefault();
+        switchPage(btn.getAttribute('data-page'));
+      });
+      btn.addEventListener('touchend', function(e) {
+        e.preventDefault();
+        switchPage(btn.getAttribute('data-page'));
+      });
+    })(btns[i]);
   }
-
-  document.querySelectorAll('.bnav-btn').forEach(btn => {
-    btn.addEventListener('click', function() { switchPage(this.dataset.page); });
-  });
 }
 
 /* ═══════════════════════════════════════════════

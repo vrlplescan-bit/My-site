@@ -1,4 +1,4 @@
-const CACHE = 'viorel-v7';
+const CACHE = 'viorel-v8';
 const ASSETS = [
   './index.html',
   './style.css',

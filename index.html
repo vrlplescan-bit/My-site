@@ -915,18 +915,18 @@
 
   <!-- Bottom nav — mobile only -->
   <nav class="bottom-nav">
-    <button class="bnav-btn active" data-page="dashboard">🏠<span>Home</span></button>
-    <button class="bnav-btn" data-page="plan">🎯<span>Plan</span></button>
-    <button class="bnav-btn" data-page="todo">✅<span>To-Do</span></button>
-    <button class="bnav-btn" data-page="thoughts">💭<span>Gânduri</span></button>
-    <button class="bnav-btn" data-page="learning">📚<span>Ore</span></button>
-    <button class="bnav-btn" data-page="german">🇩🇪<span>Germana</span></button>
-    <button class="bnav-btn" data-page="notifications">🔔<span>Notif.</span></button>
-    <button class="bnav-btn" data-page="tabele">📋<span>Tabele</span></button>
+    <button class="bnav-btn active" data-page="dashboard" onclick="switchPage('dashboard')">🏠<span>Home</span></button>
+    <button class="bnav-btn" data-page="plan" onclick="switchPage('plan')">🎯<span>Plan</span></button>
+    <button class="bnav-btn" data-page="todo" onclick="switchPage('todo')">✅<span>To-Do</span></button>
+    <button class="bnav-btn" data-page="thoughts" onclick="switchPage('thoughts')">💭<span>Gânduri</span></button>
+    <button class="bnav-btn" data-page="learning" onclick="switchPage('learning')">📚<span>Ore</span></button>
+    <button class="bnav-btn" data-page="german" onclick="switchPage('german')">🇩🇪<span>Germana</span></button>
+    <button class="bnav-btn" data-page="notifications" onclick="switchPage('notifications')">🔔<span>Notif.</span></button>
+    <button class="bnav-btn" data-page="tabele" onclick="switchPage('tabele')">📋<span>Tabele</span></button>
   </nav>
 
   <div id="toast"></div>
-  <script src="app.js?v=7"></script>
+  <script src="app.js?v=8"></script>
   <script>
     if ('serviceWorker' in navigator) {
       navigator.serviceWorker.register('./sw.js');
