@@ -360,24 +360,26 @@ function getWeekProgress(weekNr) {
    NAVIGATION
 ═══════════════════════════════════════════════ */
 function initNav() {
-  document.querySelectorAll('.nav-btn').forEach(btn => {
-    btn.addEventListener('click', () => {
-      const page = btn.dataset.page;
-      document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
-      document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-      btn.classList.add('active');
-      document.getElementById('page-' + page).classList.add('active');
-      const renders = {
-        dashboard:     renderDashboard,
-        plan:          renderPlanPage,
-        todo:          renderTodos,
-        thoughts:      renderThoughts,
-        learning:      renderLearning,
-        german:        initNotepad,
-        notifications: renderNotifs,
-      };
-      if (renders[page]) renders[page]();
-    });
+  const renders = {
+    dashboard:     renderDashboard,
+    plan:          renderPlanPage,
+    todo:          renderTodos,
+    thoughts:      renderThoughts,
+    learning:      renderLearning,
+    german:        initNotepad,
+    notifications: renderNotifs,
+  };
+
+  function switchPage(page) {
+    document.querySelectorAll('.nav-btn, .bnav-btn').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll(`[data-page="${page}"]`).forEach(b => b.classList.add('active'));
+    document.getElementById('page-' + page).classList.add('active');
+    if (renders[page]) renders[page]();
+  }
+
+  document.querySelectorAll('.nav-btn, .bnav-btn').forEach(btn => {
+    btn.addEventListener('click', () => switchPage(btn.dataset.page));
   });
 }
 
