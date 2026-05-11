@@ -961,6 +961,7 @@ function addTodo() {
   const text     = input.value.trim();
   if (!text) { toast('Scrie un task!','error'); return; }
   const cat      = document.getElementById('todo-cat').value;
+  scheduleSync();
   const priority = document.getElementById('todo-priority').value;
   const todos    = State.todos;
   todos.unshift({id:Date.now(),text,cat,priority,done:false,date:todayISO()});
@@ -1023,6 +1024,7 @@ function addThought() {
   const thoughts=State.thoughts;
   thoughts.unshift({id:Date.now(),text,mood:selectedMood,tag,date:new Date().toLocaleString('ro-RO')});
   State.thoughts=thoughts;
+  scheduleSync();
   input.value=''; document.getElementById('thought-tag').value='';
   selectedMood=''; document.querySelectorAll('.mood-btn').forEach(b=>b.classList.remove('selected'));
   renderThoughts(); renderDashboard(); toast('Gând salvat! 💭');
@@ -1076,6 +1078,7 @@ function logHours() {
   document.getElementById('hour-note').value='';
   renderLearning(); renderDashboard(); renderCalendar();
   toast(`${h}h de ${cat} adăugate!`,'success');
+  scheduleSync();
 }
 function deleteHourLog(id) {
   State.hoursLog=State.hoursLog.filter(x=>x.id!==id); renderLearning(); renderDashboard(); renderCalendar();
@@ -1143,6 +1146,7 @@ function initNotepad() {
       const s=document.getElementById('notepad-saved');
       s.textContent='salvat ✓';
       setTimeout(()=>{ s.textContent=''; },1500);
+      scheduleSync();
     },600);
   });
 }
@@ -1517,12 +1521,160 @@ function importData(event) {
 }
 
 /* ═══════════════════════════════════════════════
+   SUPABASE — CLOUD SYNC
+═══════════════════════════════════════════════ */
+const SB_URL = 'https://qjiheuixewlvadegwpya.supabase.co';
+const SB_KEY = 'sb_publishable_r0C3-teuEIKPV7aVcb47XA_NT6Qo5qn';
+const SYNC_KEYS = ['todos','thoughts','hoursLog','startDate','german_notepad','notifs','vocab'];
+
+let _sb = null;
+function getSB() {
+  if (!_sb && window.supabase) {
+    _sb = window.supabase.createClient(SB_URL, SB_KEY);
+  }
+  return _sb;
+}
+
+let _syncTimer = null;
+function scheduleSync() {
+  clearTimeout(_syncTimer);
+  _syncTimer = setTimeout(syncToCloud, 4000);
+}
+
+function setSyncStatus(text, color) {
+  const el = document.getElementById('sync-status');
+  const det = document.getElementById('sync-detail');
+  if (el) el.textContent = text;
+  if (det) det.textContent = text;
+  if (color && el) el.style.color = color;
+}
+
+async function syncToCloud() {
+  const sb = getSB(); if (!sb) return;
+  try {
+    const { data: { user } } = await sb.auth.getUser();
+    if (!user) return;
+    setSyncStatus('⏳ Se salvează...', '');
+    const rows = SYNC_KEYS
+      .filter(k => localStorage.getItem(k) !== null)
+      .map(k => ({ user_id: user.id, key: k, value: localStorage.getItem(k), updated_at: new Date().toISOString() }));
+    if (!rows.length) return;
+    const { error } = await sb.from('user_data').upsert(rows, { onConflict: 'user_id,key' });
+    if (error) throw error;
+    const now = new Date();
+    setSyncStatus('✅ Salvat ' + pad(now.getHours()) + ':' + pad(now.getMinutes()), 'var(--green)');
+  } catch(e) {
+    setSyncStatus('⚠️ Eroare sync', 'var(--red)');
+    console.error('syncToCloud', e);
+  }
+}
+
+async function syncFromCloud() {
+  const sb = getSB(); if (!sb) return false;
+  try {
+    const { data: { user } } = await sb.auth.getUser();
+    if (!user) return false;
+    const { data, error } = await sb.from('user_data').select('key,value');
+    if (error) throw error;
+    if (!data || !data.length) return false;
+    data.forEach(row => { if (row.value) localStorage.setItem(row.key, row.value); });
+    return true;
+  } catch(e) { console.error('syncFromCloud', e); return false; }
+}
+
+async function syncNow() {
+  setSyncStatus('⏳ Se sincronizează...', '');
+  await syncToCloud();
+}
+
+async function loginWithEmail() {
+  const sb = getSB(); if (!sb) return;
+  const email = (document.getElementById('auth-email') || {}).value || '';
+  if (!email || !email.includes('@')) { toast('Introdu un email valid!', 'error'); return; }
+  const btn = document.querySelector('#auth-logged-out .btn-primary');
+  if (btn) { btn.disabled = true; btn.textContent = '⏳ Se trimite...'; }
+  const { error } = await sb.auth.signInWithOtp({
+    email,
+    options: { emailRedirectTo: 'https://vrlplescan-bit.github.io/My-site/' }
+  });
+  if (btn) { btn.disabled = false; btn.textContent = '📧 Trimite link'; }
+  if (error) {
+    toast('Eroare: ' + error.message, 'error');
+  } else {
+    const st = document.getElementById('auth-status');
+    if (st) { st.textContent = '📧 Link trimis la ' + email + ' — verifică email-ul și dă click pe link!'; st.style.color = 'var(--green)'; }
+    toast('Link trimis! Verifică email-ul 📬', 'success');
+  }
+}
+
+async function logout() {
+  const sb = getSB(); if (!sb) return;
+  await sb.auth.signOut();
+  updateAuthUI(null);
+  toast('Deconectat', 'accent');
+}
+
+function updateAuthUI(user) {
+  const out  = document.getElementById('auth-logged-out');
+  const inn  = document.getElementById('auth-logged-in');
+  const mail = document.getElementById('auth-user-email');
+  const sync = document.getElementById('topbar-sync');
+  if (user) {
+    if (out)  out.style.display  = 'none';
+    if (inn)  inn.style.display  = '';
+    if (mail) mail.textContent   = user.email;
+    if (sync) sync.style.display = '';
+  } else {
+    if (out)  out.style.display  = '';
+    if (inn)  inn.style.display  = 'none';
+    if (sync) sync.style.display = 'none';
+  }
+}
+
+async function initAuth() {
+  const sb = getSB(); if (!sb) return;
+  sb.auth.onAuthStateChange(async (event, session) => {
+    if (event === 'SIGNED_IN' && session) {
+      updateAuthUI(session.user);
+      setSyncStatus('⏳ Se încarcă datele din cloud...', '');
+      const hadData = await syncFromCloud();
+      if (hadData) {
+        renderDashboard(); renderTodos(); renderThoughts();
+        renderLearning(); initNotepad(); renderNotifs();
+        toast('Date încărcate din cloud! ☁️', 'success');
+      }
+      await syncToCloud();
+    } else if (event === 'SIGNED_OUT') {
+      updateAuthUI(null);
+    }
+  });
+
+  const { data: { session } } = await sb.auth.getSession();
+  if (session) {
+    updateAuthUI(session.user);
+    syncToCloud();
+  }
+
+  // Auto-sync la fiecare 60 secunde dacă e logat
+  setInterval(async () => {
+    const { data: { user } } = await sb.auth.getUser().catch(() => ({ data: {} }));
+    if (user) scheduleSync();
+  }, 60000);
+
+  // Sync când iese din pagină
+  document.addEventListener('visibilitychange', () => {
+    if (document.visibilityState === 'hidden') syncToCloud();
+  });
+}
+
+/* ═══════════════════════════════════════════════
    INIT
 ═══════════════════════════════════════════════ */
 function init() {
   initNav();
   startClock();
   initCalendar();
+  initAuth();
 
   document.getElementById('hour-date').value = todayISO();
 

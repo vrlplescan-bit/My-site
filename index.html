@@ -25,6 +25,9 @@
   <header class="topbar">
     <div class="topbar-logo">✦ <span>Viorel</span></div>
 
+    <div id="topbar-sync" class="topbar-sync" style="display:none;">
+      <span id="sync-status">☁️</span>
+    </div>
 
     <div class="topbar-clock">
       <div class="topbar-time" id="topbar-time">00:00:00</div>
@@ -285,6 +288,38 @@
       <div id="page-notifications" class="page">
         <div class="page-header">
           <h1 class="page-title">🔔 <span>Notificări</span></h1>
+        </div>
+
+        <!-- ── Cloud Sync ── -->
+        <div class="card auth-card">
+          <div class="card-title">☁️ Sincronizare Cloud</div>
+
+          <!-- Neconectat -->
+          <div id="auth-logged-out">
+            <p style="font-size:13px;color:var(--muted);margin-bottom:14px;line-height:1.6;">
+              Introdu email-ul tău — îți trimitem un link magic. Dai click pe link și ești conectat. Datele se salvează automat în cloud.
+            </p>
+            <div style="display:flex;gap:10px;flex-wrap:wrap;">
+              <input type="email" id="auth-email" class="input" placeholder="email@icloud.com" style="flex:1;min-width:200px;" />
+              <button class="btn btn-primary" onclick="loginWithEmail()">📧 Trimite link</button>
+            </div>
+            <div id="auth-status" style="margin-top:10px;font-size:13px;color:var(--muted);"></div>
+          </div>
+
+          <!-- Conectat -->
+          <div id="auth-logged-in" style="display:none;">
+            <div style="display:flex;align-items:center;gap:14px;flex-wrap:wrap;">
+              <div>
+                <div style="font-size:13px;color:var(--muted);">Conectat ca</div>
+                <div id="auth-user-email" style="font-weight:600;color:var(--text);"></div>
+              </div>
+              <div style="margin-left:auto;display:flex;gap:8px;flex-wrap:wrap;">
+                <button class="btn btn-ghost btn-sm" onclick="syncNow()">🔄 Sincronizează</button>
+                <button class="btn btn-ghost btn-sm" onclick="logout()">Deconectare</button>
+              </div>
+            </div>
+            <div id="sync-detail" style="margin-top:10px;font-size:12px;color:var(--muted);"></div>
+          </div>
         </div>
         <div class="card">
           <div class="card-title">Adaugă reamintire</div>
@@ -1351,6 +1386,9 @@
 
   <div id="toast"></div>
 
+  <!-- Supabase SDK -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+
   <!-- Nav inline — funcționează independent de app.js -->
   <script>
     function switchPage(page) {
@@ -1367,7 +1405,7 @@
     }
   </script>
 
-  <script src="app.js?v=11"></script>
+  <script src="app.js?v=12"></script>
   <script>
     if ('serviceWorker' in navigator) {
       navigator.serviceWorker.register('./sw.js');

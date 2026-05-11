@@ -86,6 +86,14 @@ body {
 .nav-btn.active { color: var(--accent); background: rgba(124,106,247,.14); }
 
 .topbar-clock { flex-shrink: 0; text-align: right; }
+
+.topbar-sync {
+  font-size: 12px;
+  color: var(--muted);
+  flex-shrink: 0;
+  white-space: nowrap;
+}
+.auth-card { border-left: 3px solid var(--accent); }
 .topbar-time {
   font-size: 17px;
   font-weight: 700;
