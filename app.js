@@ -288,6 +288,7 @@ const CATS = [
   { name:'Germana', emoji:'🇩🇪', color:'#f59e0b' },
   { name:'IT',      emoji:'💻',  color:'#7c6af7' },
   { name:'Engleza', emoji:'🇬🇧', color:'#5eead4' },
+  { name:'Pian',    emoji:'🎹',  color:'#f43f5e' },
   { name:'Terapie', emoji:'🧠',  color:'#f472b6' },
 ];
 const CAT_COLOR = Object.fromEntries(CATS.map(c => [c.name, c.color]));
@@ -1749,8 +1750,12 @@ function checkArticle() {
 }
 
 function switchLang(lang, btn) {
-  document.getElementById('tbl-de').style.display = lang === 'de' ? '' : 'none';
-  document.getElementById('tbl-en').style.display = lang === 'en' ? '' : 'none';
+  ['tbl-de','tbl-en','tbl-piano','tbl-cyber'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.style.display = 'none';
+  });
+  const active = document.getElementById('tbl-'+lang);
+  if (active) active.style.display = '';
   document.querySelectorAll('.tbl-lang-btn').forEach(b => b.classList.remove('active'));
   btn.classList.add('active');
 }

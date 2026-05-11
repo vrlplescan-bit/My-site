@@ -229,7 +229,7 @@
           <div class="card-title">Adaugă ore</div>
           <div class="hour-log-row">
             <select id="log-cat" class="input select-sm">
-              <option>Germana</option><option>IT</option><option>Engleza</option><option>Terapie</option>
+              <option>Germana</option><option>IT</option><option>Engleza</option><option>Pian</option><option>Terapie</option>
             </select>
             <input type="number" id="hour-input" class="input" placeholder="Ore" min="0.5" max="24" step="0.5" style="width:90px;" />
             <input type="date" id="hour-date" class="input" style="width:160px;" />
@@ -245,6 +245,7 @@
               <button class="filter-btn" onclick="setLogFilter('Germana',this)">DE</button>
               <button class="filter-btn" onclick="setLogFilter('IT',this)">IT</button>
               <button class="filter-btn" onclick="setLogFilter('Engleza',this)">EN</button>
+              <button class="filter-btn" onclick="setLogFilter('Pian',this)">🎹</button>
               <button class="filter-btn" onclick="setLogFilter('Terapie',this)">TP</button>
             </div>
           </div>
@@ -334,6 +335,8 @@
         <div class="tbl-lang-tabs">
           <button class="tbl-lang-btn active" onclick="switchLang('de',this)">🇩🇪 Germană</button>
           <button class="tbl-lang-btn" onclick="switchLang('en',this)">🇬🇧 Engleză</button>
+          <button class="tbl-lang-btn" onclick="switchLang('piano',this)">🎹 Pian</button>
+          <button class="tbl-lang-btn" onclick="switchLang('cyber',this)">🔐 CyberSec</button>
         </div>
 
         <!-- ── GERMAN TABLES ── -->
@@ -839,6 +842,409 @@
 
         </div><!-- /tbl-en -->
 
+        <!-- ══════════════════════════════════════════
+             PIANO / MUZICĂ
+        ══════════════════════════════════════════ -->
+        <div id="tbl-piano" style="display:none;">
+
+          <div class="tbl-section-title">Note muzicale</div>
+
+          <div class="card tbl-card">
+            <div class="card-title">Notele pe portativ — denumiri</div>
+            <div class="tbl-wrap"><table class="gtbl">
+              <thead><tr><th>Notă RO</th><th>Notă EN/INT</th><th>Germană</th><th>Octavă centrală</th><th>Frecvență (A4)</th></tr></thead>
+              <tbody>
+                <tr><td class="hi-teal"><strong>Do</strong></td><td>C</td><td>C</td><td>C4 (Do central)</td><td>261.63 Hz</td></tr>
+                <tr><td><strong>Re</strong></td><td>D</td><td>D</td><td>D4</td><td>293.66 Hz</td></tr>
+                <tr><td class="hi-teal"><strong>Mi</strong></td><td>E</td><td>E</td><td>E4</td><td>329.63 Hz</td></tr>
+                <tr><td><strong>Fa</strong></td><td>F</td><td>F</td><td>F4</td><td>349.23 Hz</td></tr>
+                <tr><td class="hi-teal"><strong>Sol</strong></td><td>G</td><td>G</td><td>G4</td><td>392.00 Hz</td></tr>
+                <tr><td><strong>La</strong></td><td>A</td><td>A</td><td>A4 (diapason)</td><td class="hi-yellow">440.00 Hz</td></tr>
+                <tr><td class="hi-teal"><strong>Si</strong></td><td>B</td><td>H</td><td>B4</td><td>493.88 Hz</td></tr>
+              </tbody>
+            </table></div>
+            <div class="tbl-note">⚠️ În Germania: Si = <strong>H</strong>, Si♭ = <strong>B</strong> (diferit față de EN)</div>
+          </div>
+
+          <div class="card tbl-card">
+            <div class="card-title">Alterații (diezi &amp; bemoli)</div>
+            <div class="tbl-wrap"><table class="gtbl">
+              <thead><tr><th>Simbol</th><th>Nume</th><th>Efect</th><th>Exemplu</th></tr></thead>
+              <tbody>
+                <tr><td class="hi-red"><strong>♯ (#)</strong></td><td>Diez / Sharp</td><td>Urcă nota cu un semiton</td><td>C♯ = Do diez</td></tr>
+                <tr><td class="hi-teal"><strong>♭ (b)</strong></td><td>Bemol / Flat</td><td>Coboară nota cu un semiton</td><td>B♭ = Si bemol</td></tr>
+                <tr><td class="hi-yellow"><strong>♮</strong></td><td>Becar / Natural</td><td>Anulează alterația anterioară</td><td>F♮ = Fa natural</td></tr>
+                <tr><td><strong>𝄪 (x)</strong></td><td>Dublu diez</td><td>Urcă cu 2 semitoane</td><td>Cx = Do dublu diez</td></tr>
+                <tr><td><strong>𝄫</strong></td><td>Dublu bemol</td><td>Coboară cu 2 semitoane</td><td>Bbb</td></tr>
+              </tbody>
+            </table></div>
+          </div>
+
+          <div class="tbl-section-title">Durate de note</div>
+
+          <div class="card tbl-card">
+            <div class="card-title">Valori de note și pauze</div>
+            <div class="tbl-wrap"><table class="gtbl">
+              <thead><tr><th>Notă</th><th>RO</th><th>EN</th><th>Durata (4/4)</th><th>Pauza</th></tr></thead>
+              <tbody>
+                <tr><td>𝅝</td><td class="hi-yellow"><strong>Doime dublată</strong></td><td>Double whole / Breve</td><td>8 timpi</td><td>𝄺</td></tr>
+                <tr><td>𝅗𝅥</td><td class="hi-teal"><strong>Notă întreagă</strong></td><td>Whole note</td><td>4 timpi</td><td>—</td></tr>
+                <tr><td>𝅗𝅥 (alb)</td><td><strong>Doime</strong></td><td>Half note</td><td>2 timpi</td><td>𝄽</td></tr>
+                <tr><td>♩</td><td><strong>Pătrime</strong></td><td>Quarter note</td><td>1 timp</td><td>𝄼</td></tr>
+                <tr><td>♪</td><td><strong>Optime</strong></td><td>Eighth note</td><td>½ timp</td><td>𝄾</td></tr>
+                <tr><td>𝅘𝅥𝅯</td><td><strong>Șestime</strong></td><td>Sixteenth note</td><td>¼ timp</td><td>𝄿</td></tr>
+                <tr><td>𝅘𝅥𝅰</td><td><strong>Treizecidoime</strong></td><td>Thirty-second note</td><td>⅛ timp</td><td>𝅀</td></tr>
+              </tbody>
+            </table></div>
+            <div class="tbl-note">💡 O notă cu punct (.) valorează 1,5× valoarea sa. Ex: ♩. = 1½ timpi</div>
+          </div>
+
+          <div class="tbl-section-title">Scări &amp; Tonalități</div>
+
+          <div class="card tbl-card">
+            <div class="card-title">Scara majoră — structură (tonuri și semitoane)</div>
+            <div class="tbl-wrap"><table class="gtbl">
+              <thead><tr><th>Treaptă</th><th>1</th><th>2</th><th>3</th><th>4</th><th>5</th><th>6</th><th>7</th><th>8</th></tr></thead>
+              <tbody>
+                <tr><td class="case-lbl">Interval</td><td>—</td><td class="hi-teal">T</td><td class="hi-teal">T</td><td class="hi-red">S</td><td class="hi-teal">T</td><td class="hi-teal">T</td><td class="hi-teal">T</td><td class="hi-red">S</td></tr>
+                <tr><td class="case-lbl">Do major (C)</td><td>Do</td><td>Re</td><td>Mi</td><td>Fa</td><td>Sol</td><td>La</td><td>Si</td><td>Do</td></tr>
+                <tr><td class="case-lbl">Sol major (G)</td><td>Sol</td><td>La</td><td>Si</td><td>Do</td><td>Re</td><td>Mi</td><td class="hi-red">Fa♯</td><td>Sol</td></tr>
+                <tr><td class="case-lbl">Fa major (F)</td><td>Fa</td><td>Sol</td><td>La</td><td class="hi-red">Si♭</td><td>Do</td><td>Re</td><td>Mi</td><td>Fa</td></tr>
+              </tbody>
+            </table></div>
+            <div class="tbl-note">T = ton (2 semitoane) · S = semiton (1 treaptă pe claviatură)</div>
+          </div>
+
+          <div class="card tbl-card">
+            <div class="card-title">Scara minoră naturală — structură</div>
+            <div class="tbl-wrap"><table class="gtbl">
+              <thead><tr><th>Treaptă</th><th>1</th><th>2</th><th>3</th><th>4</th><th>5</th><th>6</th><th>7</th><th>8</th></tr></thead>
+              <tbody>
+                <tr><td class="case-lbl">Interval</td><td>—</td><td class="hi-teal">T</td><td class="hi-red">S</td><td class="hi-teal">T</td><td class="hi-teal">T</td><td class="hi-red">S</td><td class="hi-teal">T</td><td class="hi-teal">T</td></tr>
+                <tr><td class="case-lbl">La minor (Am)</td><td>La</td><td>Si</td><td>Do</td><td>Re</td><td>Mi</td><td>Fa</td><td>Sol</td><td>La</td></tr>
+                <tr><td class="case-lbl">Re minor (Dm)</td><td>Re</td><td>Mi</td><td>Fa</td><td>Sol</td><td>La</td><td class="hi-red">Si♭</td><td>Do</td><td>Re</td></tr>
+              </tbody>
+            </table></div>
+          </div>
+
+          <div class="card tbl-card">
+            <div class="card-title">Armuri — număr de diezi / bemoli</div>
+            <div class="tbl-wrap"><table class="gtbl">
+              <thead><tr><th>Armură</th><th>Tonalitate majoră</th><th>Relativă minoră</th><th>Alterații</th></tr></thead>
+              <tbody>
+                <tr><td>0</td><td>Do major (C)</td><td>La minor (Am)</td><td>—</td></tr>
+                <tr><td class="hi-red">1♯</td><td>Sol major (G)</td><td>Mi minor (Em)</td><td>Fa♯</td></tr>
+                <tr><td class="hi-red">2♯</td><td>Re major (D)</td><td>Si minor (Bm)</td><td>Fa♯ Do♯</td></tr>
+                <tr><td class="hi-red">3♯</td><td>La major (A)</td><td>Fa♯ minor</td><td>Fa♯ Do♯ Sol♯</td></tr>
+                <tr><td class="hi-red">4♯</td><td>Mi major (E)</td><td>Do♯ minor</td><td>Fa♯ Do♯ Sol♯ Re♯</td></tr>
+                <tr><td class="hi-teal">1♭</td><td>Fa major (F)</td><td>Re minor (Dm)</td><td>Si♭</td></tr>
+                <tr><td class="hi-teal">2♭</td><td>Si♭ major (B♭)</td><td>Sol minor (Gm)</td><td>Si♭ Mi♭</td></tr>
+                <tr><td class="hi-teal">3♭</td><td>Mi♭ major (E♭)</td><td>Do minor (Cm)</td><td>Si♭ Mi♭ La♭</td></tr>
+              </tbody>
+            </table></div>
+          </div>
+
+          <div class="tbl-section-title">Acorduri</div>
+
+          <div class="card tbl-card">
+            <div class="card-title">Tipuri de acorduri de bază</div>
+            <div class="tbl-wrap"><table class="gtbl">
+              <thead><tr><th>Acord</th><th>Structură</th><th>Exemplu (C)</th><th>Sunet</th></tr></thead>
+              <tbody>
+                <tr><td class="hi-teal"><strong>Major</strong></td><td>1 + 3m + 5 (T+T+S / T+T)</td><td>C – E – G</td><td>Vesel, strălucitor</td></tr>
+                <tr><td class="hi-red"><strong>Minor</strong></td><td>1 + 3m♭ + 5 (T+S / T+T+S)</td><td>C – E♭ – G</td><td>Trist, profund</td></tr>
+                <tr><td class="hi-yellow"><strong>Diminuat</strong></td><td>1 + 3m♭ + 5♭</td><td>C – E♭ – G♭</td><td>Tensionat, instabil</td></tr>
+                <tr><td><strong>Augmentat</strong></td><td>1 + 3m + 5♯</td><td>C – E – G♯</td><td>Misterios</td></tr>
+                <tr><td class="hi-teal"><strong>Major 7</strong></td><td>1 + 3 + 5 + 7</td><td>C – E – G – B</td><td>Jazz, cald</td></tr>
+                <tr><td><strong>Dominant 7</strong></td><td>1 + 3 + 5 + 7♭</td><td>C – E – G – B♭</td><td>Tensiune → rezoluție</td></tr>
+                <tr><td class="hi-red"><strong>Minor 7</strong></td><td>1 + 3♭ + 5 + 7♭</td><td>C – E♭ – G – B♭</td><td>Soul, blues</td></tr>
+                <tr><td><strong>Sus2</strong></td><td>1 + 2 + 5</td><td>C – D – G</td><td>Deschis, modern</td></tr>
+                <tr><td><strong>Sus4</strong></td><td>1 + 4 + 5</td><td>C – F – G</td><td>Suspendat</td></tr>
+              </tbody>
+            </table></div>
+          </div>
+
+          <div class="card tbl-card">
+            <div class="card-title">Acorduri în Do major — progresii</div>
+            <div class="tbl-wrap"><table class="gtbl">
+              <thead><tr><th>Treaptă</th><th>Acord</th><th>Tip</th><th>Note</th><th>Simbol</th></tr></thead>
+              <tbody>
+                <tr><td class="hi-teal">I</td><td>Do major</td><td>Major</td><td>C – E – G</td><td>C</td></tr>
+                <tr><td>II</td><td>Re minor</td><td>Minor</td><td>D – F – A</td><td>Dm</td></tr>
+                <tr><td>III</td><td>Mi minor</td><td>Minor</td><td>E – G – B</td><td>Em</td></tr>
+                <tr><td>IV</td><td>Fa major</td><td>Major</td><td>F – A – C</td><td>F</td></tr>
+                <tr><td class="hi-teal">V</td><td>Sol major</td><td>Major</td><td>G – B – D</td><td>G</td></tr>
+                <tr><td>VI</td><td>La minor</td><td>Minor</td><td>A – C – E</td><td>Am</td></tr>
+                <tr><td class="hi-red">VII</td><td>Si diminuat</td><td>Diminuat</td><td>B – D – F</td><td>Bdim</td></tr>
+              </tbody>
+            </table></div>
+            <div class="tbl-note">🎵 Progresie clasică: I–V–VI–IV (C–G–Am–F) — mii de cântece populare!</div>
+          </div>
+
+          <div class="tbl-section-title">Termeni muzicali</div>
+
+          <div class="card tbl-card">
+            <div class="card-title">Tempo — indicații de viteză</div>
+            <div class="tbl-wrap"><table class="gtbl">
+              <thead><tr><th>Termen</th><th>BPM</th><th>Semnificație</th></tr></thead>
+              <tbody>
+                <tr><td>Larghissimo</td><td>&lt; 24</td><td>Extrem de lent</td></tr>
+                <tr><td>Largo</td><td>40–60</td><td>Larg, solemn</td></tr>
+                <tr><td>Adagio</td><td>56–76</td><td>Lent, expresiv</td></tr>
+                <tr><td>Andante</td><td>72–96</td><td>Pășit (mersul omului)</td></tr>
+                <tr><td class="hi-teal">Moderato</td><td>96–120</td><td>Moderat</td></tr>
+                <tr><td>Allegro</td><td>120–156</td><td>Rapid, vioi</td></tr>
+                <tr><td class="hi-red">Presto</td><td>168–200</td><td>Foarte rapid</td></tr>
+                <tr><td>Prestissimo</td><td>&gt; 200</td><td>Extrem de rapid</td></tr>
+              </tbody>
+            </table></div>
+          </div>
+
+          <div class="card tbl-card">
+            <div class="card-title">Dinamică — intensitate</div>
+            <div class="tbl-wrap"><table class="gtbl">
+              <thead><tr><th>Simbol</th><th>Termen</th><th>Semnificație</th></tr></thead>
+              <tbody>
+                <tr><td><em>ppp</em></td><td>Pianississimo</td><td>Extrem de încet</td></tr>
+                <tr><td><em>pp</em></td><td>Pianissimo</td><td>Foarte încet</td></tr>
+                <tr><td class="hi-teal"><em>p</em></td><td>Piano</td><td>Încet</td></tr>
+                <tr><td><em>mp</em></td><td>Mezzo-piano</td><td>Puțin încet</td></tr>
+                <tr><td><em>mf</em></td><td>Mezzo-forte</td><td>Puțin tare</td></tr>
+                <tr><td class="hi-teal"><em>f</em></td><td>Forte</td><td>Tare</td></tr>
+                <tr><td><em>ff</em></td><td>Fortissimo</td><td>Foarte tare</td></tr>
+                <tr><td class="hi-red"><em>fff</em></td><td>Fortississimo</td><td>Extrem de tare</td></tr>
+                <tr><td>cresc. / &lt;</td><td>Crescendo</td><td>Din ce în ce mai tare</td></tr>
+                <tr><td>decresc. / &gt;</td><td>Decrescendo</td><td>Din ce în ce mai încet</td></tr>
+              </tbody>
+            </table></div>
+          </div>
+
+          <div class="card tbl-card">
+            <div class="card-title">Tehnici de execuție</div>
+            <div class="tbl-wrap"><table class="gtbl">
+              <thead><tr><th>Termen</th><th>Semnificație</th></tr></thead>
+              <tbody>
+                <tr><td class="hi-teal"><strong>Legato</strong></td><td>Note legate, fără întrerupere</td></tr>
+                <tr><td><strong>Staccato</strong></td><td>Note scurte, detașate (punct deasupra)</td></tr>
+                <tr><td><strong>Tenuto</strong></td><td>Nota ținută la valoarea deplină (linie deasupra)</td></tr>
+                <tr><td><strong>Sforzando (sfz)</strong></td><td>Accent brusc, forțat</td></tr>
+                <tr><td><strong>Portato</strong></td><td>Între legato și staccato</td></tr>
+                <tr><td><strong>Arpeggio</strong></td><td>Acordul cântat pe rând (ca harpa)</td></tr>
+                <tr><td><strong>Trill (tr)</strong></td><td>Alternanță rapidă între două note alăturate</td></tr>
+                <tr><td><strong>Glissando</strong></td><td>Alunecare rapidă pe taste</td></tr>
+                <tr><td class="hi-yellow"><strong>Pedal (Ped)</strong></td><td>Folosire pedală sustain — ține sunetul</td></tr>
+              </tbody>
+            </table></div>
+          </div>
+
+          <div class="card tbl-card">
+            <div class="card-title">Intervale muzicale</div>
+            <div class="tbl-wrap"><table class="gtbl">
+              <thead><tr><th>Interval</th><th>Semitoane</th><th>Exemplu (de la C)</th><th>Caracter</th></tr></thead>
+              <tbody>
+                <tr><td>Primă (unisonă)</td><td>0</td><td>C–C</td><td>Identic</td></tr>
+                <tr><td>Secundă mică</td><td>1</td><td>C–C♯</td><td>Disonant</td></tr>
+                <tr><td>Secundă mare</td><td>2</td><td>C–D</td><td>Tensionat</td></tr>
+                <tr><td>Terță mică</td><td>3</td><td>C–E♭</td><td class="hi-red">Minor (trist)</td></tr>
+                <tr><td>Terță mare</td><td>4</td><td>C–E</td><td class="hi-teal">Major (vesel)</td></tr>
+                <tr><td>Cvartă perfectă</td><td>5</td><td>C–F</td><td>Stabil</td></tr>
+                <tr><td>Cvintă perfectă</td><td>7</td><td>C–G</td><td class="hi-teal">Cel mai stabil</td></tr>
+                <tr><td>Sextă mare</td><td>9</td><td>C–A</td><td>Cald, romantic</td></tr>
+                <tr><td>Septimă mare</td><td>11</td><td>C–B</td><td>Tensionat, jazz</td></tr>
+                <tr><td>Octavă</td><td>12</td><td>C–C'</td><td class="hi-teal">Consonant perfect</td></tr>
+              </tbody>
+            </table></div>
+          </div>
+
+        </div><!-- /tbl-piano -->
+
+        <!-- ══════════════════════════════════════════
+             CYBERSECURITY
+        ══════════════════════════════════════════ -->
+        <div id="tbl-cyber" style="display:none;">
+
+          <div class="tbl-section-title">Fundamente</div>
+
+          <div class="card tbl-card">
+            <div class="card-title">Triada CIA — principii de bază</div>
+            <div class="tbl-wrap"><table class="gtbl">
+              <thead><tr><th>Principiu</th><th>EN</th><th>Descriere</th><th>Exemplu atac</th></tr></thead>
+              <tbody>
+                <tr><td class="hi-teal"><strong>Confidențialitate</strong></td><td>Confidentiality</td><td>Datele sunt accesibile doar celor autorizați</td><td>Data breach, spionaj</td></tr>
+                <tr><td class="hi-red"><strong>Integritate</strong></td><td>Integrity</td><td>Datele nu sunt modificate neautorizat</td><td>Man-in-the-middle, tampering</td></tr>
+                <tr><td class="hi-yellow"><strong>Disponibilitate</strong></td><td>Availability</td><td>Sistemul este accesibil când e nevoie</td><td>DDoS, ransomware</td></tr>
+              </tbody>
+            </table></div>
+            <div class="tbl-note">+ <strong>Non-repudiere</strong>: nu poți nega că ai făcut o acțiune (log-uri, semnături digitale)</div>
+          </div>
+
+          <div class="card tbl-card">
+            <div class="card-title">Tipuri de atacuri — clasificare</div>
+            <div class="tbl-wrap"><table class="gtbl">
+              <thead><tr><th>Atac</th><th>Tip</th><th>Descriere</th><th>Apărare</th></tr></thead>
+              <tbody>
+                <tr><td class="hi-red"><strong>Phishing</strong></td><td>Social engineering</td><td>E-mail/link fals → furi credențiale</td><td>2FA, educație</td></tr>
+                <tr><td class="hi-red"><strong>Spear Phishing</strong></td><td>Social engineering</td><td>Phishing țintit (personalizat)</td><td>Verificare expeditor</td></tr>
+                <tr><td><strong>SQL Injection</strong></td><td>Web</td><td>Cod SQL injectat în câmpuri de input</td><td>Prepared statements, ORM</td></tr>
+                <tr><td><strong>XSS</strong></td><td>Web</td><td>Script malițios injectat în pagini</td><td>Sanitizare input, CSP</td></tr>
+                <tr><td><strong>CSRF</strong></td><td>Web</td><td>Acțiune executată fără acordul utilizatorului</td><td>CSRF token, SameSite cookie</td></tr>
+                <tr><td class="hi-yellow"><strong>MITM</strong></td><td>Rețea</td><td>Interceptarea comunicației</td><td>HTTPS, certificate pinning</td></tr>
+                <tr><td class="hi-red"><strong>DDoS</strong></td><td>Rețea</td><td>Flood de trafic → indisponibilitate</td><td>CDN, rate limiting, WAF</td></tr>
+                <tr><td><strong>Ransomware</strong></td><td>Malware</td><td>Criptare fișiere → răscumpărare</td><td>Backup, EDR, segmentare</td></tr>
+                <tr><td><strong>Brute Force</strong></td><td>Autentificare</td><td>Încercare sistematică parole</td><td>Lockout, CAPTCHA, 2FA</td></tr>
+                <tr><td><strong>Zero-day</strong></td><td>Exploit</td><td>Vulnerabilitate necunoscută/nepatchuită</td><td>Sandboxing, monitoring</td></tr>
+              </tbody>
+            </table></div>
+          </div>
+
+          <div class="tbl-section-title">Rețele &amp; Protocoale</div>
+
+          <div class="card tbl-card">
+            <div class="card-title">Modelul OSI — 7 straturi</div>
+            <div class="tbl-wrap"><table class="gtbl">
+              <thead><tr><th>Nr.</th><th>Strat</th><th>EN</th><th>Funcție</th><th>Protocol/Exemplu</th></tr></thead>
+              <tbody>
+                <tr><td class="hi-teal"><strong>7</strong></td><td>Aplicație</td><td>Application</td><td>Interfața cu utilizatorul</td><td>HTTP, FTP, SMTP, DNS</td></tr>
+                <tr><td><strong>6</strong></td><td>Prezentare</td><td>Presentation</td><td>Criptare, compresie, format</td><td>SSL/TLS, JPEG, ASCII</td></tr>
+                <tr><td><strong>5</strong></td><td>Sesiune</td><td>Session</td><td>Gestiune conexiuni/sesiuni</td><td>NetBIOS, RPC</td></tr>
+                <tr><td class="hi-yellow"><strong>4</strong></td><td>Transport</td><td>Transport</td><td>Livrare end-to-end, porturi</td><td>TCP, UDP</td></tr>
+                <tr><td><strong>3</strong></td><td>Rețea</td><td>Network</td><td>Rutare, adresare IP</td><td>IP, ICMP, ARP</td></tr>
+                <tr><td><strong>2</strong></td><td>Legătură date</td><td>Data Link</td><td>Adresare MAC, switch</td><td>Ethernet, Wi-Fi (802.11)</td></tr>
+                <tr><td class="hi-red"><strong>1</strong></td><td>Fizic</td><td>Physical</td><td>Bit-uri pe cablu/aer</td><td>Cablu, fibră, radio</td></tr>
+              </tbody>
+            </table></div>
+            <div class="tbl-note">Mnemonic: <strong>Please Do Not Throw Sausage Pizza Away</strong> (de jos în sus: Physical→Application)</div>
+          </div>
+
+          <div class="card tbl-card">
+            <div class="card-title">Porturi importante de știut</div>
+            <div class="tbl-wrap"><table class="gtbl">
+              <thead><tr><th>Port</th><th>Protocol</th><th>Descriere</th><th>Securizat?</th></tr></thead>
+              <tbody>
+                <tr><td class="hi-teal">22</td><td>SSH</td><td>Remote shell securizat</td><td>✅ Da</td></tr>
+                <tr><td>23</td><td>Telnet</td><td>Remote shell nesecurizat</td><td>❌ Nu (text clar)</td></tr>
+                <tr><td>25</td><td>SMTP</td><td>Trimitere email</td><td>⚠️ Parțial</td></tr>
+                <tr><td>53</td><td>DNS</td><td>Rezolvare nume domeniu</td><td>⚠️ DNS over HTTPS mai sigur</td></tr>
+                <tr><td>80</td><td>HTTP</td><td>Web nesecurizat</td><td>❌ Nu</td></tr>
+                <tr><td class="hi-teal">443</td><td>HTTPS</td><td>Web securizat (TLS)</td><td>✅ Da</td></tr>
+                <tr><td>3389</td><td>RDP</td><td>Remote Desktop Windows</td><td>⚠️ Adesea atacat</td></tr>
+                <tr><td>3306</td><td>MySQL</td><td>Bază de date MySQL</td><td>⚠️ Nu expune public</td></tr>
+                <tr><td>8080</td><td>HTTP alt.</td><td>Server web alternativ</td><td>❌ Nu</td></tr>
+                <tr><td class="hi-yellow">445</td><td>SMB</td><td>Partajare fișiere Windows</td><td>⚠️ WannaCry!</td></tr>
+              </tbody>
+            </table></div>
+          </div>
+
+          <div class="tbl-section-title">Criptografie</div>
+
+          <div class="card tbl-card">
+            <div class="card-title">Tipuri de criptare</div>
+            <div class="tbl-wrap"><table class="gtbl">
+              <thead><tr><th>Tip</th><th>Cheie</th><th>Viteza</th><th>Exemple</th><th>Folosit pentru</th></tr></thead>
+              <tbody>
+                <tr><td class="hi-teal"><strong>Simetrică</strong></td><td>1 cheie (aceeași)</td><td>⚡ Rapidă</td><td>AES-256, ChaCha20</td><td>Criptare date în masă</td></tr>
+                <tr><td class="hi-yellow"><strong>Asimetrică</strong></td><td>Publică + Privată</td><td>🐢 Lentă</td><td>RSA, ECC, Ed25519</td><td>HTTPS handshake, SSH</td></tr>
+                <tr><td><strong>Hash</strong></td><td>Niciuna (one-way)</td><td>⚡ Rapidă</td><td>SHA-256, bcrypt, Argon2</td><td>Parole, integritate fișiere</td></tr>
+              </tbody>
+            </table></div>
+          </div>
+
+          <div class="card tbl-card">
+            <div class="card-title">Algoritmi — stare actuală</div>
+            <div class="tbl-wrap"><table class="gtbl">
+              <thead><tr><th>Algoritm</th><th>Tip</th><th>Status</th><th>Observație</th></tr></thead>
+              <tbody>
+                <tr><td class="hi-teal">AES-256</td><td>Simetric</td><td>✅ Sigur</td><td>Standard industrie</td></tr>
+                <tr><td class="hi-teal">RSA-2048+</td><td>Asimetric</td><td>✅ Sigur</td><td>RSA-1024 = compromis</td></tr>
+                <tr><td class="hi-teal">SHA-256 / SHA-3</td><td>Hash</td><td>✅ Sigur</td><td>Git folosește SHA-256</td></tr>
+                <tr><td class="hi-teal">bcrypt / Argon2</td><td>Hash parole</td><td>✅ Sigur</td><td>Slow by design</td></tr>
+                <tr><td class="hi-red">MD5</td><td>Hash</td><td>❌ SPART</td><td>Nu folosi pentru securitate</td></tr>
+                <tr><td class="hi-red">SHA-1</td><td>Hash</td><td>❌ SPART</td><td>Coliziuni demonstrare 2017</td></tr>
+                <tr><td class="hi-red">DES / 3DES</td><td>Simetric</td><td>❌ Vulnerabil</td><td>Înlocuit cu AES</td></tr>
+              </tbody>
+            </table></div>
+          </div>
+
+          <div class="tbl-section-title">Autentificare &amp; Acces</div>
+
+          <div class="card tbl-card">
+            <div class="card-title">Factori de autentificare</div>
+            <div class="tbl-wrap"><table class="gtbl">
+              <thead><tr><th>Factor</th><th>Ce este</th><th>Exemple</th><th>Vulnerabilitate</th></tr></thead>
+              <tbody>
+                <tr><td class="hi-teal"><strong>Ceva ce știi</strong></td><td>Knowledge</td><td>Parolă, PIN, întrebare</td><td>Phishing, brute force</td></tr>
+                <tr><td class="hi-yellow"><strong>Ceva ce ai</strong></td><td>Possession</td><td>Token, SMS OTP, YubiKey</td><td>SIM swapping</td></tr>
+                <tr><td class="hi-red"><strong>Ceva ce ești</strong></td><td>Inherence</td><td>Amprentă, față, iris</td><td>Spoofing, deepfake</td></tr>
+                <tr><td><strong>Unde ești</strong></td><td>Location</td><td>IP, GPS, rețea</td><td>VPN bypass</td></tr>
+              </tbody>
+            </table></div>
+            <div class="tbl-note">💡 MFA (Multi-Factor Auth) = 2+ factori diferiți combinați → mult mai sigur</div>
+          </div>
+
+          <div class="card tbl-card">
+            <div class="card-title">OWASP Top 10 (2021) — vulnerabilități web</div>
+            <div class="tbl-wrap"><table class="gtbl">
+              <thead><tr><th>#</th><th>Vulnerabilitate</th><th>Descriere scurtă</th></tr></thead>
+              <tbody>
+                <tr><td class="hi-red">A01</td><td>Broken Access Control</td><td>Utilizator accesează resurse neautorizate</td></tr>
+                <tr><td class="hi-red">A02</td><td>Cryptographic Failures</td><td>Date sensibile transmise/stocate nesecurizat</td></tr>
+                <tr><td class="hi-red">A03</td><td>Injection (SQL, XSS...)</td><td>Input nevalid executat ca cod</td></tr>
+                <tr><td>A04</td><td>Insecure Design</td><td>Arhitectură fără principii de securitate</td></tr>
+                <tr><td>A05</td><td>Security Misconfiguration</td><td>Setări default, porturi deschise, erori verbose</td></tr>
+                <tr><td>A06</td><td>Vulnerable Components</td><td>Librării/dependențe cu vulnerabilități known</td></tr>
+                <tr><td class="hi-yellow">A07</td><td>Auth &amp; Session Failures</td><td>Parole slabe, sesiuni neexpirate, token expus</td></tr>
+                <tr><td>A08</td><td>Software Integrity Failures</td><td>Update-uri/pipeline fără verificare integritate</td></tr>
+                <tr><td>A09</td><td>Security Logging Failures</td><td>Atacuri nedetectate din cauza lipsei de log-uri</td></tr>
+                <tr><td>A10</td><td>SSRF</td><td>Serverul face request-uri la URL-uri interne</td></tr>
+              </tbody>
+            </table></div>
+          </div>
+
+          <div class="tbl-section-title">Concepte cheie</div>
+
+          <div class="card tbl-card">
+            <div class="card-title">Termeni esențiali</div>
+            <div class="tbl-wrap"><table class="gtbl">
+              <thead><tr><th>Termen</th><th>Definiție</th></tr></thead>
+              <tbody>
+                <tr><td class="hi-teal"><strong>Vulnerability</strong></td><td>Slăbiciune în sistem care poate fi exploatată</td></tr>
+                <tr><td><strong>Threat</strong></td><td>Actor sau eveniment care poate exploata o vulnerabilitate</td></tr>
+                <tr><td class="hi-red"><strong>Exploit</strong></td><td>Cod/metodă care exploatează o vulnerabilitate</td></tr>
+                <tr><td><strong>Attack Surface</strong></td><td>Totalitatea punctelor de intrare posibile într-un sistem</td></tr>
+                <tr><td class="hi-yellow"><strong>Penetration Testing</strong></td><td>Atac autorizat pentru a găsi vulnerabilități</td></tr>
+                <tr><td><strong>Red Team</strong></td><td>Echipa care atacă (simulează adversarul)</td></tr>
+                <tr><td><strong>Blue Team</strong></td><td>Echipa care apără și monitorizează</td></tr>
+                <tr><td><strong>Purple Team</strong></td><td>Red + Blue împreună → îmbunătățire continuă</td></tr>
+                <tr><td class="hi-teal"><strong>Zero Trust</strong></td><td>Nu te încrede în nimeni/nimic fără verificare</td></tr>
+                <tr><td><strong>Principle of Least Privilege</strong></td><td>Acordă minim de permisiuni necesare</td></tr>
+                <tr><td><strong>Defense in Depth</strong></td><td>Mai multe straturi de apărare suprapuse</td></tr>
+                <tr><td class="hi-red"><strong>APT</strong></td><td>Advanced Persistent Threat — atacator sofisticat, pe termen lung</td></tr>
+                <tr><td><strong>IOC</strong></td><td>Indicator of Compromise — semn că sistemul e compromis</td></tr>
+                <tr><td><strong>CVE</strong></td><td>Common Vulnerabilities and Exposures — baza de date vulnerabilități</td></tr>
+              </tbody>
+            </table></div>
+          </div>
+
+          <div class="card tbl-card">
+            <div class="card-title">Unelte populare în CyberSec</div>
+            <div class="tbl-wrap"><table class="gtbl">
+              <thead><tr><th>Unealtă</th><th>Categorie</th><th>Folosit pentru</th></tr></thead>
+              <tbody>
+                <tr><td class="hi-teal"><strong>nmap</strong></td><td>Reconnaissance</td><td>Scanare porturi, detectare OS</td></tr>
+                <tr><td><strong>Wireshark</strong></td><td>Network analysis</td><td>Captură și analiză trafic</td></tr>
+                <tr><td><strong>Burp Suite</strong></td><td>Web testing</td><td>Interceptare/modificare request-uri HTTP</td></tr>
+                <tr><td class="hi-red"><strong>Metasploit</strong></td><td>Exploitation</td><td>Framework exploit-uri</td></tr>
+                <tr><td><strong>Hashcat / John</strong></td><td>Password cracking</td><td>Crack hash-uri parole</td></tr>
+                <tr><td><strong>Aircrack-ng</strong></td><td>Wi-Fi</td><td>Testare securitate rețele wireless</td></tr>
+                <tr><td class="hi-teal"><strong>Nessus / OpenVAS</strong></td><td>Vulnerability scanner</td><td>Scanare automată vulnerabilități</td></tr>
+                <tr><td><strong>OWASP ZAP</strong></td><td>Web scanner</td><td>Scanare automată aplicații web</td></tr>
+                <tr><td><strong>Hydra</strong></td><td>Brute force</td><td>Atac dicționar pe servicii</td></tr>
+              </tbody>
+            </table></div>
+          </div>
+
+        </div><!-- /tbl-cyber -->
+
       </div><!-- /page-tabele -->
 
     </main>
@@ -943,7 +1349,7 @@
     }
   </script>
 
-  <script src="app.js?v=8"></script>
+  <script src="app.js?v=9"></script>
   <script>
     if ('serviceWorker' in navigator) {
       navigator.serviceWorker.register('./sw.js');
