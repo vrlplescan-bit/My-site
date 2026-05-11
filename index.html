@@ -1349,19 +1349,20 @@
     }
   </script>
 
-  <script src="app.js?v=9"></script>
+  <script src="app.js?v=10"></script>
   <script>
     if ('serviceWorker' in navigator) {
       navigator.serviceWorker.register('./sw.js');
     }
-    // Clock — independent, runs always
+    // Clock — singurul ceas, rulează mereu
     (function() {
       var Z=['Du','Lu','Ma','Mi','Jo','Vi','Sa'];
       var L=['Ian','Feb','Mar','Apr','Mai','Iun','Iul','Aug','Sep','Oct','Nov','Dec'];
       function p(n){return n<10?'0'+n:n;}
       function tick(){
         var n=new Date();
-        var t=p(n.getHours())+':'+p(n.getMinutes())+':'+p(n.getSeconds());
+        var h=n.getHours();
+        var t=p(h)+':'+p(n.getMinutes())+':'+p(n.getSeconds());
         var d=Z[n.getDay()]+', '+n.getDate()+' '+L[n.getMonth()]+' '+n.getFullYear();
         ['mobile-time','topbar-time','clock-display'].forEach(function(id){
           var e=document.getElementById(id); if(e) e.textContent=t;
@@ -1369,6 +1370,8 @@
         ['mobile-date','topbar-date','clock-date-display','dash-date-full'].forEach(function(id){
           var e=document.getElementById(id); if(e) e.textContent=d;
         });
+        var gr=h<5?'noapte!':h<12?'dimineața!':h<18?'ziua!':'seara!';
+        var eg=document.getElementById('dash-greeting'); if(eg) eg.textContent=gr;
       }
       tick();
       setInterval(tick, 1000);
