@@ -322,6 +322,24 @@
           <div id="notif-list"></div>
           <div id="notif-empty" class="empty-state" style="display:none">Nicio notificare setată.</div>
         </div>
+
+        <!-- ── Backup date ── -->
+        <div class="card">
+          <div class="card-title">💾 Backup date</div>
+          <div style="font-size:13px;color:var(--muted);margin-bottom:14px;line-height:1.6;">
+            Toate datele tale (note, ore, task-uri, gânduri) stau în browser. Exportă-le înainte să ștergi istoricul Safari, ca să nu le pierzi.
+          </div>
+          <div style="display:flex;gap:10px;flex-wrap:wrap;">
+            <button class="btn btn-primary" onclick="exportData()" style="flex:1;min-width:140px;">
+              📤 Exportă backup
+            </button>
+            <label class="btn btn-ghost" style="flex:1;min-width:140px;cursor:pointer;text-align:center;">
+              📥 Importă backup
+              <input type="file" accept=".json" onchange="importData(event)" style="display:none;" />
+            </label>
+          </div>
+          <div id="backup-status" style="margin-top:10px;font-size:13px;"></div>
+        </div>
       </div>
 
       <!-- ══════════════ TABELE ══════════════ -->
@@ -1349,7 +1367,7 @@
     }
   </script>
 
-  <script src="app.js?v=10"></script>
+  <script src="app.js?v=11"></script>
   <script>
     if ('serviceWorker' in navigator) {
       navigator.serviceWorker.register('./sw.js');

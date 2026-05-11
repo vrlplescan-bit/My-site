@@ -1449,6 +1449,74 @@ function renderDashboard() {
 }
 
 /* ═══════════════════════════════════════════════
+   BACKUP / RESTORE
+═══════════════════════════════════════════════ */
+const BACKUP_KEYS = [
+  'todos', 'thoughts', 'hoursLog', 'startDate',
+  'german_notepad', 'notifs', 'vocab',
+  'planProgress', 'learningLog',
+];
+
+function exportData() {
+  try {
+    const backup = { _version: 1, _date: new Date().toISOString() };
+    // salvează toate cheile cunoscute
+    BACKUP_KEYS.forEach(k => {
+      const v = localStorage.getItem(k);
+      if (v !== null) backup[k] = v;
+    });
+    // salvează și orice altă cheie care începe cu 'viorel_'
+    for (let i = 0; i < localStorage.length; i++) {
+      const k = localStorage.key(i);
+      if (k && !backup[k]) backup[k] = localStorage.getItem(k);
+    }
+    const blob = new Blob([JSON.stringify(backup, null, 2)], { type: 'application/json' });
+    const url  = URL.createObjectURL(blob);
+    const a    = document.createElement('a');
+    const d    = new Date();
+    a.href     = url;
+    a.download = 'viorel-backup-' + d.toISOString().slice(0,10) + '.json';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+    const st = document.getElementById('backup-status');
+    if (st) { st.textContent = '✅ Backup salvat cu succes!'; st.style.color = 'var(--green)'; }
+    toast('Backup exportat!', 'success');
+  } catch(e) {
+    toast('Eroare export: ' + e.message, 'error');
+  }
+}
+
+function importData(event) {
+  const file = event.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = function(e) {
+    try {
+      const backup = JSON.parse(e.target.result);
+      if (!backup._version) throw new Error('Fișier invalid — nu e un backup Viorel.');
+      let count = 0;
+      Object.keys(backup).forEach(k => {
+        if (k.startsWith('_')) return; // skip metadata
+        localStorage.setItem(k, backup[k]);
+        count++;
+      });
+      const st = document.getElementById('backup-status');
+      if (st) { st.textContent = '✅ ' + count + ' intrări restaurate! Reîncarcă pagina.'; st.style.color = 'var(--green)'; }
+      toast('Date restaurate! Reîncarcă pagina.', 'success');
+      setTimeout(() => location.reload(), 1800);
+    } catch(err) {
+      const st = document.getElementById('backup-status');
+      if (st) { st.textContent = '❌ ' + err.message; st.style.color = 'var(--red)'; }
+      toast('Eroare import: ' + err.message, 'error');
+    }
+  };
+  reader.readAsText(file);
+  event.target.value = ''; // reset input
+}
+
+/* ═══════════════════════════════════════════════
    INIT
 ═══════════════════════════════════════════════ */
 function init() {
